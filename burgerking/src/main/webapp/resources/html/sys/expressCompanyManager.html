@@ -1,0 +1,273 @@
+<style type="text/css">
+    #top_alert {
+		width: 180px;
+		padding: 10px 0;
+		background: #4A4242;
+		border: 1px solid #4A4242;
+		color: #FFFFFF;
+		position: absolute;
+		text-align: center;
+		left: 25%;
+		top: 0;
+	}
+</style>
+
+<div class="col-md-12">
+  <div class="box">
+      <div class="box-header">
+        <h3 class="box-title">物流公司列表</h3>
+      </div><!-- /.box-header -->
+      <form class="form-horizontal">
+          <div class="box-body">
+		      <div class="form-group">
+		        <label for="expressId" class="col-sm-2 control-label">物流公司ID：</label>
+		        <div class="col-sm-3">
+		           <input type="text" class="form-control" name="expressId" id="expressId" placeholder="请输入物流公司ID...">
+		        </div>
+		       <label for="expressName" class="col-sm-2 control-label">物流公司名称：</label>
+		        <div class="col-sm-3"> 
+		          <input type="text" class="form-control" name="expressName" id="expressName" placeholder="请输入物流公司名称...">
+		        </div>
+		      </div>
+		      <br/><br/>
+		      <div class="form-group">
+		      <div class="col-sm-9"> </div>
+		       <div class="col-sm-3" align="right">
+		          <button type="button" class="btn btn-info" id="search">查询</button>
+			      <button type="button" class="btn btn-info" id="ad" onclick="add()">新增</button>
+			      <button type="reset" class="btn btn-info">重置</button>
+		        </div>
+		      </div>
+		    </div><!-- /.box-body -->
+      </form>
+      <div class="box-body">
+        <table id="example1" class="table table-bordered table-striped table-hover">
+          <thead>
+            <tr>
+              <th style="text-align: center;">序号</th>
+              <th style="text-align: center;">物流公司ID</th>
+              <th style="text-align: center;">物流公司名称</th>
+              <th style="text-align: center;">更新时间</th>
+              <th style="text-align: center;">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+          </tbody>
+        </table>
+      </div><!-- /.box-body -->
+    </div><!-- /.box -->
+<div id="top_alert" class="top_alert" style="display: none;"><span></span></div>
+
+<!-- delete Modal -->
+<div class="modal fade" id="deleMode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">删除确认</h4>
+      </div>
+      <div class="modal-body">
+  	  <p>你真的要删除物流公司吗？删除后是不可恢复的，请慎重考虑！</p>
+      <div class="modal-footer">
+     	 <button type="button" class="btn btn btn-info btn-sm" id="delButton" value="" onclick="delStoreType()">确定</button>
+        <button type="button" class="btn btn btn-info btn-sm" data-dismiss="modal">取消</button>
+      </div>
+    </div>
+  </div>
+ </div>
+</div>
+<!--  delete model end -->
+</div>
+<!-- <script type="text/javascript" src="../resources/dist/device.js"></script> -->
+ <script type="text/javascript">
+ var ad = '0';
+ var dele = '0';
+ var mod = '0';
+	 function ready(){
+		 findButPermiss();
+		 initTable(null, null);
+	
+	 }
+	 $('#search').click(function(){
+		 var expressId = $.trim($('#expressId').val());
+		 var expressName = $.trim($('#expressName').val());
+		 if(expressId==''){
+			 expressId=null;
+		 }
+		 if(expressName==''){
+			 expressName=null;
+		 }
+		 
+		 initTable(expressId, expressName);
+	 });
+	
+	function initTable(expressId, expressName) {
+		
+		var path="/burgerking/sys/findExpressCompanys";
+		var parm=null;
+		if(expressId!=null){
+			parm="expressId="+expressId;
+		}
+		if(expressName!=null){
+			if(parm==null){
+				parm="expressName="+expressName;
+			}else{
+				parm+="&expressName="+expressName;
+			}
+		}
+		if(parm!=null){
+			path += "?"+parm;
+		}
+		$("#example1").dataTable({
+			"bFilter": false,//去掉搜索框
+			//"bAutoWidth": true, //自适应宽度
+			"sPaginationType" : "full_numbers",
+			//"sAjaxDataProp" : "aData",
+			"bLengthChange": false, //改变每页显示数据数量
+			"bSort": false,
+			"bDestroy" : true,
+			"bProcessing" : true,
+			"sAjaxSource" : path,
+			"bServerSide" : true,
+			
+			"oLanguage" : {
+				"sProcessing" : "正在加载中......",
+				//"sLengthMenu" : "每页显示 _MENU_ 条记录",
+				"sZeroRecords" : "没有数据！",
+				"sEmptyTable" : "表中无数据存在！",
+				"sInfo" : "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+				"sInfoEmpty" : "显示0到0条记录",
+				"sInfoFiltered" : "数据表中共为 _MAX_ 条记录",
+				//"sSearch" : "搜索",
+				"oPaginate" : {
+					"sFirst" : "首页",
+					"sPrevious" : "上一页",
+					"sNext" : "下一页",
+					"sLast" : "末页"
+				}
+			},
+			 "aoColumnDefs":
+		      	 [
+		      	   {'bVisible': true, 'aTargets': [0,1,2,3,4]},
+		      	   {'bSortable': false, 'aTargets': [0,1,2,3,4]},
+		      	 {
+		               "aTargets": [0],
+		               "mData": null,
+		               "mRender": function (data, type, full) {
+		                   return '<div style="text-align: center;">'+data.id+'</div>';
+		               }
+		     	  },
+		     	 {
+		               "aTargets": [1],
+		               "mData": null,
+		               "mRender": function (data, type, full) {
+		                   return '<div style="text-align: center;">'+data.expressId+'</div>';
+		               }
+		     	  },{
+		               "aTargets": [2],
+		               "mData": null,
+		               "mRender": function (data, type, full) {
+		                   return '<div style="text-align: center;">'+data.expressName+'</div>';
+		               }
+		     	  },
+		     	  {
+		               "aTargets": [3],
+		               "mData": null,
+		               "mRender": function (data, type, full) {
+		                   return '<div style="text-align: center;">'+new Date(data.updateTime).Format('yyyy-MM-dd hh:mm:ss')+'</div>';
+		               }
+		     	  },
+		      	 {
+		               "aTargets": [4],
+		               "mData": null,
+		               "mRender": function (data, type, full) {
+		            	   if(ad == '1'){
+		            		   $("#ad").show();
+		            	   }else{
+		            		   $("#ad").hide();
+		            	   }
+		            	   var dhtml = '<div style="text-align: center;">';
+		            	   if(dele == '1'){
+		            		   dhtml+='<a href="javascript:void(0);" onclick="del('+data.id+')">删除</a>';
+		            	   }
+		            	   dhtml+='&nbsp;&nbsp;';
+		            	   if(mod == '1'){
+		            		   dhtml+='<a href="javascript:void(0);" onclick="modify('+data.id+',\''+data.expressId+'\',\''+data.expressName+'\')">修改</a>';
+		            	   }
+		            	   dhtml+='</div>';
+		                   return dhtml;
+		               }
+		     	  }]
+		});
+	}
+	function del(id){
+		$("#delButton").attr("value",id);
+		$('#deleMode').modal({backdrop: 'static', keyboard: false});
+	}
+	function delStoreType(){
+		 $.ajax({
+				type: "POST",
+		        url: "/burgerking/sys/delExpressCompany",
+		        data: {"id":$('#delButton').attr('value')},
+		        dataType: "json",
+		        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+			    cache : false,
+			    async : false,
+		        success: function(data){
+		        	if(data.res=true){
+		        		$('#deleMode').modal('hide');
+		        		initTable(null);
+		        		showmessage('删除成功');
+		        		$('#top_alert').fadeOut(3000);
+		        		
+		        	}else{
+		        		showmessage('删除失败');
+		        		$('#top_alert').fadeOut(3000);
+		        	}
+		        }
+		 });
+	}
+	
+	function modify(id,expressId,expressName){
+		
+		$("#maincontent").load('../resources/html/sys/expressCompanyModify.html',function(){
+			ready(id,expressId,expressName);
+		});
+	}
+	 function showmessage(text) {
+			
+			$('#top_alert').empty().append(
+					'<span>' + text + '</span>');
+			$('#top_alert').css('display', 'block');
+			
+			$('.top_alert').css({ 
+				position:'absolute', 
+				left: ($(window).width() - $('.top_alert').outerWidth())/3, 
+				top: ($(window).height() - $('.top_alert').outerHeight())/8 + $(".content").scrollTop() 
+				}); 
+			}
+	 function add(){
+			$("#maincontent").load('../resources/html/sys/expressCompanyAdd.html',function(){
+				ready();
+			});
+		}
+	 function findButPermiss(){
+			$.ajax({
+	 			type: "GET",
+	 	        url: "/burgerking/sys/findExpressCompanyButPermission",
+	 	        data: {},
+	 	        dataType: "json",
+	 	        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+	 		    cache : false,
+	 		    async : true,
+	 	        success: function(data){
+	 	        	$(data.but_per).each(function(i, item){
+	 	        		if(item.functionId=='1005001') ad = '1';
+	 	        		if(item.functionId=='1005002') dele = '1';
+	 	        		if(item.functionId=='1005003') mod = '1';
+	 	        	});
+	 	        }
+	 	        });
+		}
+ </script>

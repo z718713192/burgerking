@@ -1,0 +1,125 @@
+<style type="text/css">
+	.colmd4{
+		text-align: center;
+		padding-top:20px;
+		color:#ffffff;
+	}
+</style>
+
+
+<div id="main" style="width: 100%;padding:0px;">
+	<div  class="col-md-12" style="background-color: #F2F2F2;height:40px;font-size: 14px;line-height: 40px;margin-top:10px;">
+		<div  class="col-md-2"></div>
+		<div  class="col-md-10">当前位置：首页</div>
+	</div>
+	<div class="col-md-12" >
+		<div  class="col-md-4 colmd4" >
+			<div>
+				<table id="sealPage" style="background-size: 200px ;background-image: url('/burgerking/resources/hbHtml/sys/img/u22.png'); background-repeat: no-repeat;height:200px;width: 200px;float: right" onclick="toPage(this.id)">
+					<tr><td height="30px;"></td></tr>
+					<tr>
+						<td height="70px;" id="seal" style="font-size: 35px;"> </td>
+					</tr>
+					<tr>
+						<td  height="50px;">印章数</td>
+					</tr>
+					<tr><td height="50px;"></td></tr>
+				</table>
+			</div>
+		</div>
+		<div  class="col-md-4 colmd4"  >
+			<div>
+				<table id="branchOfficePage" style="background-size: 200px ;background-image: url('/burgerking/resources/hbHtml/sys/img/u24.png'); background-repeat: no-repeat;height:200px;width: 200px;margin:0px auto;"  onclick="toPage(this.id)">
+					<tr><td height="30px;"></td></tr>
+					<tr>
+						<td height="70px;" id="company" style="font-size: 35px;"> </td>
+					</tr>
+					<tr>
+						<td  height="50px;">分公司数</td>
+					</tr>
+					<tr><td height="50px;"></td></tr>
+				</table>
+			</div>
+		</div>
+		<div  class="col-md-4 colmd4" >
+			<div>
+				<table  id="storePage" style="background-size: 200px ;background-image: url('/burgerking/resources/hbHtml/sys/img/u26.png'); background-repeat: no-repeat;height:200px;width: 200px;float:left"  onclick="toPage(this.id)">
+					<tr><td height="30px;"></td></tr>
+					<tr>
+						<td height="70px;" id="store" style="font-size: 35px;"> </td>
+					</tr>
+					<tr>
+						<td  height="50px;">门店数</td>
+					</tr>
+					<tr><td height="50px;"></td></tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-12" >
+		<div  class="col-md-4 colmd4" >
+			<div>
+				<table id="userPage" style="background-size: 200px ;background-image: url('/burgerking/resources/hbHtml/sys/img/u6.png'); background-repeat: no-repeat;height:200px;width: 200px;float: right"  onclick="toPage(this.id)">
+					<tr><td height="30px;"></td></tr>
+					<tr>
+						<td height="70px;" id="user" style="font-size: 35px;"> </td>
+					</tr>
+					<tr>
+						<td  height="50px;">用户数</td>
+					</tr>
+					<tr><td height="50px;"></td></tr>
+				</table>
+			</div>
+		</div>
+<!-- 		<div  class="col-md-4 colmd4"  > -->
+<!-- 			<div> -->
+<!-- 				<table id="imporFliePage" style="background-size: 200px ;background-image: url('/burgerking/resources/hbHtml/sys/img/u20.png'); background-repeat: no-repeat;height:200px;width: 200px;margin:0px auto;"  onclick="toPage(this.id)"> -->
+<!-- 					<tr><td height="30px;"></td></tr> -->
+<!-- 					<tr> -->
+<!-- 						<td height="70px;" id="" style="font-size: 35px;">7</td> -->
+<!-- 					</tr> -->
+<!-- 					<tr> -->
+<!-- 						<td  height="50px;">累计导入处理文件数</td> -->
+<!-- 					</tr> -->
+<!-- 					<tr><td height="50px;"></td></tr> -->
+<!-- 				</table> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+	</div>
+	<div></div>
+</div >
+<script type="text/javascript">
+function ready(){
+	 $.ajax({
+			type: "GET",
+	        url: "/burgerking/sys/findAllMessage",
+	        dataType: "json",
+	        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+		    cache : false,
+		    async : false,
+	        success: function(data){
+	        	$("#seal").html(data.map.sealNum);
+	        	$("#company").html(data.map.companyNum);
+	        	$("#store").html(data.map.storeNum);
+	        	$("#user").html(data.map.userNum);
+	        	
+	        }
+	 });
+}
+// 	function toPage(id){
+// 		if(id!=undefined){
+// 			$("ul").find("li[class='b']").removeClass("b");
+// 			if(id=='supplierPage' || id=="manager"){
+// 				$("#informationPage").addClass("b")
+// 			}else{
+// 				$("#"+id+"").addClass("b")
+// 			}
+			
+// 			$("#maincontent").load('../resources/hbHtml/sys/'+id+'.html',function(){
+// 				 ready();
+// 			});
+// 		} 
+// 	}
+	
+</script>
+

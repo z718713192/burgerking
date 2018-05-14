@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	<!-- 定义静态资源的访问 -->
+	<resources mapping="/resources/**" location="/resources/" />
+	<resources mapping="/swagger/**" location="/WEB-INF/swagger/"/>
+
+    <beans:bean id="springContextUtil" class="cn.com.burgerking.utils.SpringContextUtil" lazy-init="false"/>
+	<!--视图解释器 -->  
+	<beans:bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<beans:property name="suffix" value=".html"></beans:property>
+		<beans:property name="contentType" value="cn.text/html;charset=UTF-8"></beans:property>
+	</beans:bean>
+	<beans:bean id="multipartResolver"  class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
+        <beans:property name="defaultEncoding" value="UTF-8" />  
+        <beans:property name="maxUploadSize" value="2000000000" />  
+    </beans:bean>
+
+    
+</beans:beans>

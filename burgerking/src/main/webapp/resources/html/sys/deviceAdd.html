@@ -1,0 +1,268 @@
+<style type="text/css">
+    #top_alert {
+		width: 180px;
+		padding: 10px 0;
+		background: #4A4242;
+		border: 1px solid #4A4242;
+		color: #FFFFFF;
+		position: absolute;
+		text-align: center;
+		left: 25%;
+		top: 0;
+	}
+</style>
+<div class="col-xs-12 col-md-12">
+<!-- Horizontal Form -->
+<div class="box" style="height: 100%;">
+  <div class="box-header with-border">
+    <h3 class="box-title">新增设备信息</h3>
+  </div><!-- /.box-header -->
+  <!-- form start -->
+  <form class="form-horizontal">
+    <div class="box-body">
+      <div class="form-group">
+        <label for="deviceId" class="col-sm-3 control-label">设备编号： <font color="red">*</font></label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="deviceId" id="deviceId" placeholder="请输入设备编号..." onblur="validateDeviceId()">
+        </div>
+        <label id="devicl">
+        	<font style="color: red;" id="devicf"></font>
+        </label>
+      </div>
+      <div class="form-group">
+        <label for="deviceName" class="col-sm-3 control-label">设备名称： <font color="red">*</font></label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="deviceName" id="deviceName" placeholder="请输入设备名称...">
+        </div>
+        <label id="deviceNamel">
+        	<font style="color: red;" id="deviceNamef"></font>
+        </label>
+      </div>
+      <div class="form-group">
+        <label for="typeId" class="col-sm-3 control-label">设备类型： <font color="red">*</font></label>
+        <div class="col-sm-6">
+          <select class="form-control" name="typeId" id="typeId">
+			  <option value="">----请选择设备类型----</option>
+		   </select>
+        </div>
+        <label id="typel">
+        	<font style="color: red;" id="typef"></font>
+        </label>
+      </div>
+     <div class="form-group">
+        <label for="storeId" class="col-sm-3 control-label">商店名称：</label>
+        <div class="col-sm-6">
+         	<select class="form-control" name="storeId" id="storeId">
+			  <option value="">----请选择商店名称----</option>
+			</select>
+        </div>
+        <label id="storel">
+        	<font style="color: red;" id="storef"></font>
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label for="mac" class="col-sm-3 control-label">MAC地址：</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="mac" id="mac" placeholder="请输入Mac地址...">
+        </div>
+        <label id="macl">
+        	<font style="color: red;" id="macf"></font>
+        </label>
+      </div>
+      <div class="form-group">
+        <label for="mem" class="col-sm-3 control-label">内存信息：</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="mem" id="mem" placeholder="请输入内存信息...">
+        </div>
+        <label id="meml">
+        	<font style="color: red;" id="memf"></font>
+        </label>
+      </div>
+      <div class="form-group">
+        <label for="disk" class="col-sm-3 control-label">磁盘容量：</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="disk" id="disk" placeholder="请输入磁盘容量...">
+        </div>
+        <label id="diskl">
+        	<font style="color: red;" id="diskf"></font>
+        </label>
+      </div>
+      <div class="form-group">
+        <label for="deviceName" class="col-sm-3 control-label">CPU信息：</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="cpu" id="cpu" placeholder="请输入CPU信息...">
+        </div>
+        <label id="cpul">
+        	<font style="color: red;" id="cpuf"></font>
+        </label>
+      </div>
+    </div><!-- /.box-body -->
+    <div class="box-footer" align="center">
+      <button type="button" class="btn btn-info" id="save">保存</button>
+      <button type="reset" class="btn btn-info" id="reset">重置</button>
+      <button type="button" class="btn btn-info" id="back">返回</button>
+    </div><!-- /.box-footer -->
+  </form>
+  <div id="top_alert" class="top_alert" style="display: none;"><span></span></div>
+</div><!-- /.box -->
+</div>
+<script type="text/javascript" src="../resources/dist/device.js"></script>
+ <script type="text/javascript">
+ function ready(){
+	 initDeviceSelect();
+ }
+ 
+ function showmessage(text) {
+		
+		$('#top_alert').empty().append(
+				'<span>' + text + '</span>');
+		$('#top_alert').css('display', 'block');
+		
+		$('.top_alert').css({ 
+			position:'absolute', 
+			left: ($(window).width() - $('.top_alert').outerWidth())/3, 
+			top: ($(window).height() - $('.top_alert').outerHeight())/8 + $(".content").scrollTop() 
+			}); 
+		}
+ $('#save').click(function(){
+	 var deviceId=$.trim($('#deviceId').val());
+	 var deviceName=$.trim($('#deviceName').val());
+	 var typeId=$.trim($('#typeId').val());
+	
+	 if(deviceId==''){
+		 $('#devicf').html('请输入设备编号');
+		 $('#devicl').css('display','block');
+		 return false;
+	 }else{
+		 if(deviceId.length>20){
+			 $('#devicf').html('设备编号长度不能大于20个字符');
+			 $('#devicl').css('display','block');
+			 return false;
+		 }
+		 $('#devicf').html('');
+		 $('#devicl').css('display','none');
+	 }
+	 if(!validateDeviceId()){
+		 return false;
+	 }
+	 if(deviceName==''){
+		 $('#deviceNamef').html('请输入设备名称');
+		 $('#deviceNamel').css('display','block');
+		 return false;
+	 }else{
+		 if(deviceName.length>80){
+			 $('#deviceNamef').html('设备名称不能大于80个字符');
+			 $('#deviceNamel').css('display','block');
+			 return false;
+		 }
+		 $('#deviceNamef').html('');
+		 $('#deviceNamel').css('display','none');
+	 }
+	 if(typeId==''){
+		 $('#typef').html('请选择设备类型');
+		 $('#typel').css('display','block');
+		 return false;
+	 }else{
+		 $('#typef').html('');
+		 $('#typel').css('display','none');
+	 }
+	 var storeId=$.trim($('#storeId').val());
+	 var mac=$.trim($('#mac').val());
+	 var mem=$.trim($('#mem').val());
+	 var disk=$.trim($('#disk').val());
+	 var cpu=$.trim($('#cpu').val());
+	 if(mac!=null || mac!=''){
+		 if(mac.length>17){
+			 $('#macf').html('MAC地址不能大于17个字符');
+			 $('#macl').css('display','block');
+			 return false;
+		 }else{
+			 $('#macf').html('');
+			 $('#macl').css('display','none');
+		 }
+	 }
+	 if(mem!=null || mem!=''){
+		 if(mem.length>20){
+			 $('#memf').html('内存信息不能大于20个字符');
+			 $('#meml').css('display','block');
+			 return false;
+		 }else{
+			 $('#memf').html('');
+			 $('#meml').css('display','none');
+		 }
+	 }
+	 if(disk!=null || disk!=''){
+		 if(disk.length>20){
+			 $('#diskf').html('磁盘容量不能大于20个字符');
+			 $('#diskl').css('display','block');
+			 return false;
+		 }else{
+			 $('#diskf').html('');
+			 $('#diskl').css('display','none');
+		 }
+	 }
+	 if(cpu!=null || cpu!=''){
+		 if(cpu.length>20){
+			 $('#cpuf').html('CPU信息不能大于20个字符');
+			 $('#cpul').css('display','block');
+			 return false;
+		 }else{
+			 $('#cpuf').html('');
+			 $('#cpul').css('display','none');
+		 }
+	 }
+	 var json={'deviceId':deviceId,'deviceName':deviceName,'typeId':typeId,'storeId':storeId,'mac':mac,'mem':mem,'disk':disk,'cpu':cpu};
+	 $.ajax({
+			type: "POST",
+	        url: "/burgerking/sys/addDevice",
+	        data: json,
+	        dataType: "json",
+	        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+		    cache : false,
+		    async : false,
+	        success: function(data){
+	        	if(data.res==true){
+	        		showmessage('保存成功');
+	        		$('#top_alert').fadeOut(3000);
+	        	}else{
+	        		showmessage('保存失败');
+	        		$('#top_alert').fadeOut(3000);
+	        	}
+	        }
+	    });
+ });
+ function validateDeviceId(){
+	  var deviceId=$.trim($('#deviceId').val());
+	  var flag=false;
+	  $.ajax({
+			type: "POST",
+	        url: "/burgerking/sys/validateDevice",
+	        data: {"deviceId":deviceId},
+	        dataType: "json",
+	        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+		    cache : false,
+		    async : false,
+	        success: function(data){
+	        	if(data.res==true){
+	        		$('#devicf').html('设备编号已存在');
+   	    			$('#devicl').css('display', 'block');
+	        	}else{
+	        		$('#devicf').html('');
+	        		$('#devicl').css('display', 'none');
+	        		flag=true;
+	        	}
+	        },
+	        error:function(msg){
+	        	$('#devicf').html('设备编号校验出现异常');
+	    		$('#devicl').css('display', 'block');
+	        }
+		}); 
+	  return flag;
+ }
+$('#back').click(function(){
+	$("#maincontent").load('../resources/html/sys/deviceManager.html',function(){
+		ready();
+	});
+});
+ </script>

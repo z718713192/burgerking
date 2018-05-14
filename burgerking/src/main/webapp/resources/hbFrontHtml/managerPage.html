@@ -1,0 +1,262 @@
+<style type="text/css">
+	.colmd2{
+		text-align: right;
+		height:35px;
+		line-height: 35px;
+	}
+	.colmd8{
+		height:35px;
+		line-height: 35px;
+	}
+</style>
+
+
+<div id="main" style="width: 100%;padding:0px;">
+	<div  class="col-md-12" style="background-color: #F2F2F2;height:40px;font-size: 14px;line-height: 40px;margin-top:10px;">
+		<div  class="col-md-2"></div>
+		<div  class="col-md-10">当前位置：个人信息</div>
+	</div>
+	<div class="col-md-12" >
+		<div class="col-md-2"></div>
+		<div class="col-md-8">
+			<div class="col-md-12" style="height: 30px;line-height: 30px;">个人信息：</div>
+			<div class="col-md-12">
+				<div class="col-md-2 colmd2">姓名：</div>		
+				<div class="col-md-8 colmd8"><input type="text" readonly="readonly" id="name" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid" /></div>	
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-2 colmd2">英文名：</div>		
+				<div class="col-md-8 colmd8"><input type="text" readonly="readonly" id="ename" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid" /></div>	
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-2 colmd2">工号：</div>		
+				<div class="col-md-8 colmd8"><input type="text" readonly="readonly"  id="userSerial" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid" /></div>	
+			</div>
+			<div class="col-md-12" title="发送邮件地址">
+				<div class="col-md-2 colmd2">邮箱<a onclick="updatePwdModeE()"><font color="blue" style="font-style: italic;"> (修改) </font></a>：</div>		
+				<div class="col-md-8 colmd8"><input type="text" id="email" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid" /></div>	
+			</div>
+			<div class="col-md-12" title="点击修改邮箱密码">
+				<div class="col-md-2 colmd2">邮箱密码<a onclick="updatePwdModeE()"><font color="blue" style="font-style: italic;"> (修改) </font></a>：</div>		
+				<div class="col-md-8 colmd8"><input type="text" readonly="readonly" id="epassword" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid" onfocus="updatePwdModeE()"  /></div>	
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-2 colmd2">所属公司：</div>		
+				<div class="col-md-8 colmd8"><input type="text" readonly="readonly"  id="companyName" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid" /></div>	
+			</div>
+			<div class="col-md-12" title="点击修改登陆密码">
+				<div class="col-md-2 colmd2" style="">登陆密码<a onclick="updatePwdModeL()"><font color="blue" style="font-style: italic;"> (修改) </font></a>：</div>		
+				<div class="col-md-8 colmd8"><input type="text" id="password" readonly="readonly" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid"  /></div>	
+			</div>
+			<div class="col-md-12" style="padding-left:25%;padding-top:30px;" hidden="true">
+				<button onclick="savaMessager()" style="border: 0px;border-radius: 5px;background-color: #E0592B;height:30px;width: 80px;color:#ffffff;">确定</button>
+			</div>			
+        </div>
+        <div class="col-md-2"></div>
+	</div>	
+</div>
+
+<div class="modal fade" id="updatePwdMode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content" style="width: 400px;top:200px;">
+      <div>
+      	<div class="modal-header" style="background: #ED7800;text-align: center;color:#ffffff;">
+			        	<h4 class="modal-title" id="pswdModalLabel"></h4>
+			        	<h5 id="msgInfo"></h5>
+	      </div>
+	      <input id="tmpVal" hidden="true"/>
+      	  <div id="oeml" class="col-md-12" style="margin-top:20px;">
+				<div class="col-md-4 colmd2">邮箱：</div>		
+				<div class="col-md-7"><input type="text" autocomplete="off" id="remail" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid"  onfocus="removeCss(this.id)" /></div>	
+		  </div>
+      	  <div class="col-md-12">
+				<div class="col-md-4 colmd2">原密码：</div>		
+				<div class="col-md-7"><input type="password" autocomplete="new-password" id="opasswd" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid"  onfocus="removeCss(this.id)" /></div>	
+		  </div>
+		  <div class="col-md-12">
+				<div class="col-md-4 colmd2">新密码：</div>		
+				<div class="col-md-7"><input type="password" autocomplete="off" id="npasswd" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid"  onfocus="removeCss(this.id)" /></div>	
+		  </div>
+		  <div class="col-md-12">
+				<div class="col-md-4 colmd2">确认密码：</div>		
+				<div class="col-md-7"><input type="password" autocomplete="off" id="rpasswd" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid"  onfocus="removeCss(this.id)" /></div>	
+		  </div>
+	      <div class="modal-footer" style="text-align: center">
+	     	 <button type="button" class="btn btn btn-info btn-sm" style="background-color: #E0592B;border: 0px;" id="delButton" value="" onclick="chgPwd()">确定</button>
+	         <button type="button" class="btn btn btn-info btn-sm" style="background-color: #E0592B;border: 0px;" data-dismiss="modal" onclick="cancelp()">取消</button>
+	      </div>
+    </div>
+  </div>
+ </div>
+</div>
+
+<div class="modal fade" id="savePwdMode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content" style="width: 400px;top:200px;">
+       <div class="modal-header" style="background: #ED7800;text-align: center;color:#ffffff;">
+        	<h4 class="modal-title" id="myModalLabel">保存</h4>
+      </div>
+      <div class="modal-body">
+  	   <div class="modal-header" style="text-align: center;">
+      		恭喜您！保存信息成功
+      </div>
+      <div class="modal-footer" style="text-align: center;">
+        <button type="button" class="btn btn btn-info btn-sm" data-dismiss="modal">確定</button>
+      </div>
+       </div>
+        </div>
+ </div>
+</div>
+<script type="text/javascript">
+function ready(){
+	$.ajax({
+		type: "POST",
+        url: "/burgerking/sys/curtUsrInfoPg",
+        data: {},
+        dataType: "json",
+        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+	    cache : false,
+	    async : false,
+        success: function(data){
+        	$("#password").attr("type","password");
+        	$("#epassword").attr("type","password");
+        	$("#epassword").val("./././");
+        	$("#lpassword").val("./././");
+			for (x in data.data2)
+			{
+				$("#"+x).val(data.data2[x]);
+			}
+        	$("#companyName").attr("title",data.data2.companyName);
+			
+        }
+ });
+}
+
+function savaMessager(){
+	$('#savePwdMode').modal({backdrop: 'static', keyboard: false});
+}
+ 
+function updatePwdModeL(){
+	$('#updatePwdMode').modal({backdrop: 'static', keyboard: false});
+	$("#pswdModalLabel").html("登陆密码重置！");//2.去掉val值
+	
+	$("#oeml").hide();
+	
+	$("#opasswd").attr("type","password");//3.还原
+	$("#opasswd").val("");//2.去掉val值
+	$("#tmpVal").val("l");//2.去掉val值
+	
+ 	$("#npasswd").attr("type","password");
+	$("#npasswd").val("");//2.去掉val值
+	
+ 	$("#rpasswd").attr("type","password"); 
+	$("#rpasswd").val("");//2.去掉val值
+}
+function updatePwdModeE(){
+	$('#updatePwdMode').modal({backdrop: 'static', keyboard: false});
+	$("#pswdModalLabel").html("发件箱密码重置！");//2.去掉val值
+	
+	$("#oeml").show();
+	$("#remail").val($("#email").val());
+	 
+	$("#opasswd").attr("type","password");//3.还原
+	$("#opasswd").val("");//2.去掉val值
+	$("#tmpVal").val("e");//2.去掉val值
+	
+ 	$("#npasswd").attr("type","password");
+	$("#npasswd").val("");//2.去掉val值
+	
+ 	$("#rpasswd").attr("type","password"); 
+	$("#rpasswd").val("");//2.去掉val值
+}
+function cancelp(){
+	$("#opasswd").val("");//2.去掉val值
+	$("#rpasswd").val("");//2.去掉val值
+	$("#npasswd").val("");//2.去掉val值
+	$("#opasswd").css("background-color","#ffffff");
+	$("#rpasswd").css("background-color","#ffffff");
+	$("#npasswd").css("background-color","#ffffff");
+}	
+	
+function chgPwd(){
+	var _obj = {};
+	_obj.od= $("#opasswd").val();
+	_obj.nd= $("#npasswd").val();
+	_obj.rd= $("#rpasswd").val();
+	_obj.ft= $("#tmpVal").val();
+	_obj.re= $("#remail").val();
+	var i =0;
+	if(_obj.od==null || _obj.od==""){
+		$("#opasswd").css("background-color","red");
+		i++;
+	}
+	if(_obj.nd==null || _obj.nd==""){
+		$("#npasswd").css("background-color","red");
+		i++;
+	}
+ 
+	if(_obj.rd==null || _obj.rd==""){
+		$("#rpasswd").css("background-color","red");
+		i++;
+	}
+	
+	if(_obj.nd !=_obj.rd ){
+		$("#msgInfo").html("需修改的新密码与确认密码不一致！");
+		$("#rpasswd").css("background-color","red");
+		i++;
+	}
+	if(_obj.ft=='e' && (_obj.re==null || _obj.re=="") ){
+		$("#remail").css("background-color","red");
+		i++;
+	} else{
+		var myreg= /^([0-9A-Za-z\-_\.]+)@([0-9a-z]+\.[a-z]{2,3}(\.[a-z]{2})?)$/g; ;
+		if(!myreg.test(_obj.ft)) 
+		{ 
+		    alert('请输入合法的email！'); 
+		    $("#remail").css("background-color","red");
+			i++;
+		} 
+	}
+	
+	if(i>0){
+		return;
+	} 
+	console.log(_obj);
+	
+	$.ajax({
+		type: "POST",
+        url: "/burgerking/sys/clt/usrPwd4c",
+        data: _obj,
+        dataType: "json",
+        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+	    cache : false,
+	    async : false,
+        success: function(data){
+        	console.log(data);
+        	if(data.status==400){
+        		location.href = "/burgerking/sys/hbLogin";
+        	}else{
+ 				if(data.status==1){
+ 					alert(data.msgInf);
+	 				$('#updatePwdMode').modal('hide');
+	 				$("#npasswd").val("");//2.去掉val值
+	 				$("#rpasswd").val("");//2.去掉val值
+	 				$("#opasswd").val("");//2.去掉val值
+	 				ready();
+ 				}else{
+ 					alert(data.msgInf);
+	 				$("#opasswd").val("");//2.去掉val值
+ 				}
+        	}
+        }
+ });
+	
+}
+
+function removeCss(id){
+	$("#"+id+"").css("background-color","#ffffff");
+}
+
+//ready();
+</script>
+

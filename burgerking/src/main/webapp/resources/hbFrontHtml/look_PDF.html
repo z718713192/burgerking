@@ -1,0 +1,29 @@
+<script type="text/javascript">
+	function ready(storeId, month,companyId,showId) {
+		$("#companyId").val(companyId);
+		$("#month").val(month);
+		$("#showId").val(showId);
+		$("#iframe1").attr("src","/burgerking/lg/lookPDF?storeId="+storeId+"&month="+month+"");
+		
+	}
+	
+	function toImportant(){
+		var companyId=$("#companyId").val()
+		var month=$("#month").val()
+		var showId=$("#showId").val()
+		 $("#maincontent").load(
+					'../resources/hbFrontHtml/importantFliePage.html', function() {
+						ready(companyId,showId,month);
+					});
+	}
+	 
+</script> 
+ 
+<div style="text-align: center;">
+	 <iframe id="iframe1" src="/burgerking/lg/lookPDF" width="100%" height="500px;"></iframe> 
+	 <button style="background-color: #E0592B;border: 0px;" onclick="toImportant()">返回</button>
+	 <input type="hidden" id="companyId"  />
+	 <input type="hidden" id="month"  />
+	  <input type="hidden" id="showId"  />
+</div> 
+

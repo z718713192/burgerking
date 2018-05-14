@@ -1,0 +1,219 @@
+<style type="text/css">
+	.colmd2{
+		text-align: right;
+		height:35px;
+		line-height: 35px;
+	}
+	 #top_alert {
+		width: 180px;
+		padding: 10px 0;
+		background: #4A4242;
+		border: 1px solid #4A4242;
+		color: #FFFFFF;
+		position: absolute;
+		text-align: center;
+		left: 25%;
+		top: 0;
+	}
+</style>
+
+
+<div id="main" style="width: 100%;padding:0px;">
+	<div  class="col-md-12" style="background-color: #F2F2F2;height:40px;font-size: 14px;line-height: 40px;margin-top:10px;">
+		<div  class="col-md-2"></div>
+		<div  class="col-md-10">当前位置：印章管理</div>
+	</div>
+	<div class="col-md-12" >
+		<div class="col-md-2"></div>
+		<div class="col-md-5">
+			<input type="hidden" value="" id="sealId" />
+			<div class="col-md-12" style="height: 30px;line-height: 30px;">印章信息：</div>
+			<div class="col-md-12">
+				<div class="col-md-4 colmd2">印章名称：</div>		
+				<div class="col-md-8"><input type="text" id="sealName" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid;width: 100%" placeholder="请输入印章名称" onfocus="removeCss(this.id)" /></div>	
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-4 colmd2">选择图片：</div>		
+				<div class="col-md-8">
+					<input type="file" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid;width: 100%" name="imgUrl" id="imgUrl" onfocus="removeCss(this.id)" onchange="loadImageFile(event)">
+				</div>	
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-4 colmd2">关联公司：</div>	
+				<div class="col-md-8">
+					<select id="company" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid;width: 100%"  onchange="findStoreByCId()">
+							<option value="">---请选择分公司----</option>
+					</select>
+				</div>	
+			</div>
+			<div class="col-md-12" id="storeDiv" style="display: none">
+				<div class="col-md-4 colmd2">关联门店：</div>		
+				<div class="col-md-8">
+					<div style="height:120px; overflow:auto;border: 1px solid;"  id="storeDS">
+					</div>
+				</div>	
+			</div>
+			<div class="col-md-12" style="padding-left:50%;padding-top:30px;">
+				<button onclick="savaSeal()" style="border: 0px;border-radius: 5px;background-color: #E0592B;height:30px;width: 80px;color:#ffffff;">确定</button>
+				<button onclick="back()" style="border: 0px;border-radius: 5px;background-color: #E0592B;height:30px;width: 80px;color:#ffffff;" id="update" >返回</button>
+			</div>
+        </div>
+        <div class="col-md-2">
+        	 <div style="float : left;text-align: center;"><img class="sealImg" src="" style="display: none;" width="200px">
+					</div>
+        </div>
+	</div>	
+</div>
+<script type="text/javascript">
+function ready(){
+	findCompany();
+}
+
+
+function findStoreByCId(){
+	$("#storeDiv").show(0);
+	$.ajax({
+		type: "GET",
+        url: "/burgerking/sys/findStoresByCId",
+        data:{
+        	"id":$("#company").val()
+        },
+        dataType: "json",
+        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+	    cache : false,
+	    async : false,
+        success: function(data){
+        	console.log(data)
+        	var html="";
+       		for (var int = 0; int < data.comStores.length; int++) {
+				html+="<div style='padding-left:10px;'><input type='checkbox'  style='background:red; border:5px solid red;' name='storeId' value='"+data.comStores[int].storeId+"' />&nbsp;&nbsp;"+data.comStores[int].csName+"</div>";
+			}
+			$("#storeDS").html(html);
+        }
+ 	});
+	
+}
+
+function findCompany(){
+	$.ajax({
+		type: "GET",
+        url: "/burgerking/sys/findAllCompany",
+        dataType: "json",
+        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+	    cache : false,
+	    async : false,
+        success: function(data){
+        	var html="<option value=''>---请选择分公司----</option>";
+       		for (var int = 0; int < data.data.length; int++) {
+				html+="<option value='"+data.data[int].id+"'>"+data.data[int].csName+"</option>";
+			}
+			$("#company").html(html);
+        }
+ 	});
+	
+}
+
+function removeCss(id){
+	$("#"+id+"").css("background-color","#ffffff");
+}
+
+function savaSeal(){
+	var sealName=$("#sealName").val();
+	var imgUrl=$("#imgUrl").val();
+	var company=$("#company").val();
+	var storeId  = document.getElementsByName("storeId");
+	var storeIds=[];
+	for (var int = 0; int < storeId.length; int++) {
+		if(storeId[int].checked){
+			storeIds.push(storeId[int].value);
+		}
+	}
+	if(sealName==null || sealName=="") {
+		$("#sealName").css("background-color","red");
+		return ;
+	}
+	if(imgUrl==null || imgUrl==""){
+		$("#imgUrl").css("placeholder","red");
+	}
+	if(imgUrl==''){
+		$("#imgUrl").css("background-color","red");
+		return ;
+	 }else{
+		 var str = imgUrl.split('\\');
+		 if(str[str.length-1].length>100){
+			 alert('资源名称不能大于100个字符');
+			 $("#imgUrl").css("background-color","red");
+			 return false;
+		 }else{
+			 var sttr='.'+imgUrl.split('.')[1].toLowerCase();
+			  if(!/\.(gif|jpg|jpeg|png)$/.test(sttr))
+		        {
+		          alert('图片类型必须是.gif,jpeg,jpg,png中的一种');
+		          $("#imgUrl").css("background-color","red");
+				  return false;
+		        } 
+			  $("#imgUrl").css("background-color","#ffffff");
+			 }
+		 }
+	
+	if(company==null || company==""){
+		$("#company").css("background-color","red");
+		return ;
+	}
+	
+	if(storeIds==null ||storeIds.length==0){
+		 alert("请选择门店！");
+		return ;
+	}
+	var json={
+		'sealName':sealName,
+		'companyId':company,
+		'storeId':storeIds,
+		'id':0
+	};
+	 $.ajaxFileUpload
+	 (
+	     {
+	         url: '/burgerking/sys/savaSeal', //用于文件上传的服务器端请求地址
+	         secureuri: false,           //一般设置为false
+	         fileElementId: 'imgUrl', //文件上传控件的id属性  <input type="file" id="file" name="file" /> 注意，这里一定要有name值   
+	         data:json,        //$("form").serialize(),表单序列化。指把所有元素的ID，NAME 等全部发过去
+	         dataType: 'json',//返回值类型 一般设置为json
+	         complete: function () {//只要完成即执行，最后执行
+	         },
+	         success: function (data, status)  //服务器成功响应处理函数
+	         {   
+	        	 if(data.code==400){
+		        		location.href = "/burgerking/sys/hbLogin";
+		        }else{
+		 				if(data.res){
+		 					$("#maincontent").load('../resources/hbHtml/sys/sealPage.html',function(){
+		 						ready();
+		 					});
+		 				}else{
+		 					alert("保存失败");
+		 				}
+		        }
+	         },
+	         error: function (data, status, e)//服务器响应失败处理函数
+	         {
+	        	 showmessage('服务器响应失败');
+	        	 $('#top_alert').fadeOut(3000);
+	         }
+	     }
+	     
+	 )
+}
+
+function  back(){
+	$("#maincontent").load('../resources/hbHtml/sys/sealPage.html',function(){
+			ready();
+		});
+}
+function loadImageFile(event)
+{
+	$(".sealImg").attr("src",URL.createObjectURL(event.target.files[0]));
+	$(".sealImg").show();
+}
+</script>
+

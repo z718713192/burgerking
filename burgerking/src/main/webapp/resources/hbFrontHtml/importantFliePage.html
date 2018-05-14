@@ -1,0 +1,858 @@
+<style type="text/css">
+	.colmd2{
+		text-align: center;
+		height:35px;
+		line-height: 35px;
+	}
+	.colmd8{
+		height:35px;
+		line-height: 35px;
+	}
+	
+	#ul {
+		margin-top:16px;
+		list-style-type: none;
+		width: 100%;
+	}
+	#ul li {
+		float: left;
+		height: 45px;
+		line-height:45px;
+		font-size: 16px;
+		width:14.2%;
+		text-align: left;
+		padding: 0px;
+/* 		border: 1px solid #CCCCCC; */
+	}
+	.addFile{
+		display:block;position: absolute ; z-index: 2;background: -webkit-linear-gradient(#fff, #999); background: -o-linear-gradient(#fff, #999);opacity:0.5;
+		cursor:pointer;
+	}
+	
+	.lia{
+		background-image: url('/burgerking/resources/hbFrontHtml/img/u44.png'); background-repeat: no-repeat;background-size:100% 100%;text-align:center;" 
+	}
+	.lib{
+		background-image: url('/burgerking/resources/hbFrontHtml/img/u16.png'); background-repeat: no-repeat;background-size: 100% 100%; color:black !important;;
+	}
+	.moreEmail{
+		width:20%;position: absolute !important;top:40px;z-index:4;background:#fff;
+		height:100px; border: 1px solid ;display:none;
+			}
+	.divtable{
+		overflow: hidden; text-overflow: ellipsis; white-space: nowrap;width:120px;
+	}
+	#moreEamilModalBody{
+		overflow-y:scroll;  overflow-x:hidden;height:200px;
+	}
+	#moreEamilModalBody div{
+		text-align:left;
+	}
+	th{
+		text-align: center;
+		max-width:120px;
+	}
+</style>
+
+<script type="text/javascript" src="../resources/hbFrontHtml/js/inportantExecl.js"></script> 
+<script type="text/javascript" src="../resources/hbFrontHtml/js/inportantWord.js"></script> 
+
+<div id="main" style="width: 100%;padding:0px;">
+	<input type="hidden" value="" id="companyId" />
+	<input type="hidden" value="" id="month" />
+	<div  class="col-md-12" style="background-color: #F2F2F2;height:40px;font-size: 14px;line-height: 40px;margin-top:10px;">
+		<div  class="col-md-2"></div>
+		<div  class="col-md-10">当前位置：新增文件</div>
+	</div>
+	<div class="col-md-12" >
+		<div class="col-md-2"></div>
+		<div class="col-md-10">
+			<div class="col-md-10" >
+				<ul id="ul">
+					<li class="lib"><span style="display: inline-block;height:100%;width: 80%;text-align: center;">导入</span></li>
+					<li class="lib"><img alt="" src="/burgerking/resources/hbFrontHtml/img/u36.png"><span style="display: inline-block;height:100%;width: 80%;text-align: center;">选择文件</span></li>
+					<li class="lib"><img alt="" src="/burgerking/resources/hbFrontHtml/img/u36.png"><span style="display: inline-block;height:100%;width: 80%;text-align: center;">电子签章</span></li>
+					<li class="lib"><img alt="" src="/burgerking/resources/hbFrontHtml/img/u36.png"><span style="display: inline-block;height:100%;width: 80%;text-align: center;">已转成PDF</span></li>
+					<li class="lib"><img alt="" src="/burgerking/resources/hbFrontHtml/img/u36.png"><span style="display: inline-block;height:100%;width: 80%;text-align: center;">发送邮箱</span></li>
+				    <li class="lib"><img alt="" src="/burgerking/resources/hbFrontHtml/img/u36.png"><span style="display: inline-block;height:100%;width: 80%;text-align: center;">邮件主题</span></li>
+					<li class="lib"><img alt="" src="/burgerking/resources/hbFrontHtml/img/u36.png"><span style="display: inline-block;height:100%;width: 80%;text-align: center;">核对</span></li>
+				</ul>
+			</div>
+			
+			<div class="col-md-10" id="fileImport" style="display: none;">
+				<div  class="col-md-6">
+					<div style="margin:0px auto; margin-top:8%;border:1px solid #CCCCCC;width:350px;height:200px; text-align: center" id="addExcelFile" onclick="addExcelInput()">
+						<div id="addExcelFileSun"></div>
+						<div style="font-size:80px;height:50%;margin-top:10%;">+</div>
+						<div>添加文件(excel文件)</div>
+					</div>
+				</div>
+				<div  class="col-md-6">
+					<div style="margin:0px auto;margin-top:8%;border:1px solid #CCCCCC;width:350px;height:200px; text-align: center" id="addWordFile" onclick="addWordInput()">
+						<div id="addWordFileSun"></div>
+						<div style="font-size:80px;height:50%;margin-top:10%;">+</div>
+						<div>添加文件(word文件)</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-12" id="EimportExecl">
+				
+				<div class="col-md-10" id="EselectFile" style="display: none;margin-top:30px;">
+						<div  class="col-md-8">
+							<div  class="col-md-12">
+								<div  class="col-md-12">
+									选择文件：
+									<button style="border: 1px solid #EC7801;border-radius: 5px;height: 30px;line-height: 30px;width: 50px;background-color: #ffffff;" onclick="WsealCheckedFileAll('excelCheck')">全选</button>
+									<button style="border: 1px solid #EC7801;border-radius: 5px;height: 30px;line-height: 30px;width: 50px;background-color: #ffffff;" onclick="WsealCheckedFileNotAll('excelCheck')" >批量</button>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-10">
+							<div  class="col-md-8">
+								<form id="uploadForm" name="uploadForm" enctype="multipart/form-data">
+								<span id="Eupload"></span>
+								</form>
+								<div class="col-md-12" style="margin-top:50px;">
+									<div class="col-md-4">
+										<button onclick="EselectFilePrev()" id="EselectFilePrev" style="background-color: #8B542F;color: #ffffff;border: 0px;">上一步</button>
+									</div>
+									<div class="col-md-8">
+										<button  id="EselectFileNext" style="background-color: #E0592B;color: #ffffff;border: 0px;" onclick="EselectFileNext()">下一步</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+				<div class="col-md-10" id="Ee-seal" style="display: none;margin-top:30px;">
+						<div  class="col-md-8">
+							<div  class="col-md-12">
+								<div  class="col-md-12">
+									选择电子签章：
+									<button style="border: 1px solid #EC7801;border-radius: 5px;height: 30px;line-height: 30px;width: 50px;background-color: #ffffff;" onclick="WsealCheckedFileAll('EesealFileName')">全选</button>
+									<button style="border: 1px solid #EC7801;border-radius: 5px;height: 30px;line-height: 30px;width: 50px;background-color: #ffffff;" onclick="WsealCheckedFileNotAll('EesealFileName')">批量</button>
+								</div>
+							</div> 
+						</div>
+						<div class="col-md-12">
+							<div style="padding-left:22px;">
+								<table  class="table table-bordered table-striped table-hover"  style="margin:0px; font-size: 12px;">
+										 <tr> 
+											<th style="text-align: center;" width="20%">文件名称</th>
+											<th style="text-align: center;" width="20%">关键词</th>
+											<th style="text-align: center;" width="20%">店铺编号</th>
+											<th style="text-align: center;" width="20%">所属分公司</th>
+											<th style="text-align: center;" width="20%">印章名称</th>
+										</tr>
+								 </table>
+								 <table  id="Ee-sealTable" class="table table-bordered table-striped table-hover"  style="font-size: 12px;">
+								 </table>
+								 <table width="100%" align="right" >
+								        <tr>
+								        	<td align="right">每页显示
+								        		<select id="Ee-sealTablePageNums" onchange="pageNum(this.id,'Ee-sealTable','Ee-sealTablePageId')">
+								        			<option value="5">5</option>
+								        			<option value="10" selected="selected">10</option>
+								        			<option value="20">20</option>
+								        			<option value="50">50</option>
+								        			<option value="100">100</option>
+								        		</select>条<div id="Ee-sealTablePageId" ></div>
+								        	</td>
+								       </tr>
+								 </table>
+							</div>
+							<div class="col-md-12" style="margin-top:50px;">
+								<div class="col-md-10" style="text-align: right;">
+									<button onclick="EesealPrev()" id="EesealPrev" style="background-color: #8B542F;color: #ffffff;border: 0px;">上一页</button>
+								</div>
+								<div class="col-md-2" style="text-align: right;">
+									<button  onclick="EesealNext()"  id="EesealNext" style="background-color: #E0592B;color: #ffffff;border: 0px;">下一步</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+				<div class="col-md-10" id="EchengePDF" style="display: none;margin-top:30px;">
+						<div  class="col-md-8">
+							<div  class="col-md-12">
+								<div  class="col-md-12">
+									转成PDF:
+									<button style="border: 1px solid #EC7801;border-radius: 5px;height: 30px;line-height: 30px;width: 50px;background-color: #ffffff;  " onclick="WsealCheckedFileAll('pdfPageName')">全选</button>
+									<button style="border: 1px solid #EC7801;border-radius: 5px;height: 30px;line-height: 30px;width: 50px;background-color: #ffffff;  "onclick="WsealCheckedFileNotAll('pdfPageName')">批量</button>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div style="padding-left:22px;">
+								<table id="EchengePDFTable" class="table table-bordered table-striped table-hover" style="margin:0px; font-size: 12px;">
+								          <tr>
+								           	<th style="text-align: center;"  width="20%">文件名称</th>
+								             <th style="text-align: center;" width="20%">关键词</th>
+								             <th style="text-align: center;" width="10%">店铺编号</th>
+								             <th style="text-align: center;" width="20%">所属分公司</th>
+								             <th style="text-align: center;" width="20%">印章名称</th>
+								             <th style="text-align: center;" width="10%">查看PDF</th>
+								           </tr>
+								 </table>
+								 <table id="Ee-pdfTable" class="table table-bordered table-striped table-hover"  style="font-size: 12px;">
+								 </table>
+								 <table width="100%" align="right" >
+								        <tr>
+								        	<td align="right">每页显示
+								        		<select id="Ee-pdfTablePageNums" onchange="pageNum(this.id,'Ee-pdfTable','Ee-pdfTablePageId')">
+								        			<option value="5">5</option>
+								        			<option value="10" selected="selected">10</option>
+								        			<option value="20">20</option>
+								        			<option value="50">50</option>
+								        			<option value="100">100</option>
+								        		</select>条<div id="Ee-pdfTablePageId" ></div>
+								        	</td>
+								       </tr>
+								 </table>
+							</div>
+							<div class="col-md-12" style="margin-top:50px;">
+								<div class="col-md-10" style="text-align: right;">
+									<button onclick="EchengePDFPrev()" id="EchengePDFPrev" style="background-color: #8B542F;color: #ffffff;border: 0px;">上一步</button>
+								</div>
+								<div class="col-md-2" style="text-align: right;">
+									<button  id="EchengePDFNext" style="background-color: #E0592B;color: #ffffff;border: 0px;" onclick="EchengePDFNext()">下一步</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+				<div class="col-md-10" id="EsendEmail" style="display: none;margin-top:30px;">
+						<div  class="col-md-8">
+							<div  class="col-md-12">
+								<div  class="col-md-12">
+									发送邮箱:
+									<button style="border: 1px solid #EC7801;border-radius: 5px;height: 30px;line-height: 30px;width: 50px;background-color: #ffffff;  "onclick="WsealCheckedFileAll('emailPageName')">全选</button>
+									<button style="border: 1px solid #EC7801;border-radius: 5px;height: 30px;line-height: 30px;width: 50px;background-color: #ffffff;   "onclick="WsealCheckedFileNotAll('emailPageName')">批量</button>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div style="padding-left:22px;">
+								<table class="table table-bordered table-striped table-hover" style="margin:0px; font-size: 12px;">
+								       <thead>
+								          <tr>
+								           	<th style="text-align: center;" width="20%">文件名称</th>
+								             <th style="text-align: center;"  width="20%">关键词</th>
+								             <th style="text-align: center;"  width="20%">店铺编号</th>
+								             <th style="text-align: center;" width="20%">所属分公司</th>
+								             <th style="text-align: center;" width="20%">默认邮箱</th>
+								           </tr>
+								       </thead>
+								 </table>
+								 <table id="EsendEmailTable" class="table table-bordered table-striped table-hover">
+								       
+								 </table>
+								 <table width="100%" align="right" >
+								        <tr>
+								        	<td align="right">每页显示
+								        		<select id="EsendEmailTableNums" onchange="pageNum(this.id,'EsendEmailTable','EsendEmailTablePageId')">
+								        			<option value="5">5</option>
+								        			<option value="10" selected="selected">10</option>
+								        			<option value="20">20</option>
+								        			<option value="50">50</option>
+								        			<option value="100">100</option>
+								        		</select>条<div id="EsendEmailTablePageId" ></div>
+								        	</td>
+								       </tr>
+								 </table>
+							</div>
+							<div class="col-md-12" style="margin-top:50px;">
+								<div class="col-md-10" style="text-align: right;">
+									<button onclick="EsendEmailPrev()" id="EsendEmailPrev" style="background-color: #8B542F;color: #ffffff;border: 0px;">上一步</button>
+								</div>
+								<div class="col-md-2" style="text-align: right;">
+									<button  id="EsendEmailNext" style="background-color: #E0592B;color: #ffffff;border: 0px;" onclick="EsendEmails()">下一步</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				
+				<div class="col-md-10" id="EfileTipc" style="display: none;margin-top:30px;">
+						<div  class="col-md-8">
+							<div  class="col-md-12">
+								<div  class="col-md-12">
+									发送邮箱:
+									<button style="border: 1px solid #EC7801;border-radius: 5px;height: 30px;line-height: 30px;width: 50px;background-color: #ffffff;  "onclick="WsealCheckedFileAll('subjectEmailPageName')">全选</button>
+									<button style="border: 1px solid #EC7801;border-radius: 5px;height: 30px;line-height: 30px;width: 50px;background-color: #ffffff;   "onclick="WsealCheckedFileNotAll('subjectEmailPageName')">批量</button>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div style="padding-left:22px;">
+								<table id="EfileTipcTable" class="table table-bordered table-striped table-hover" style="margin:0px; font-size: 12px;">
+								       <thead>
+								          <tr>
+								           	<th style="text-align: center;" width="20%">文件名称</th>
+								            <th style="text-align: center;" width="10%">店号</th>
+								            <th style="text-align: center;" width="10%">店名</th>
+								            <th style="text-align: center;" width="20%">月份营业额报表</th>
+								            <th style="text-align: center;" width="20%">默认邮箱</th>
+								            <th style="text-align: center;" width="20%">更多邮箱</th>
+								           </tr>
+								       </thead>
+								       <tbody>
+								       </tbody>
+								 </table>
+								 <table id="EsendEmailTableData" class="table table-bordered table-striped table-hover"></table>
+								 <table width="100%" align="right" >
+								        <tr>
+								        	<td align="right">每页显示
+								        		<select id="EsendEmailTableDataNums" onchange="pageNum(this.id,'EsendEmailTableData','EsendEmailTableDataPageId')">
+								        			<option value="5">5</option>
+								        			<option value="10" selected="selected">10</option>
+								        			<option value="20">20</option>
+								        			<option value="50">50</option>
+								        			<option value="100">100</option>
+								        		</select>条<div id="EsendEmailTableDataPageId" ></div>
+								        	</td>
+								       </tr>
+								 </table>
+							</div>
+							<div class="col-md-12" style="margin-top:50px;">
+								<div class="col-md-10" style="text-align: right;">
+									<button onclick="EfileTipcPrev()" id="EfileTipcPrev" style="background-color: #8B542F;color: #ffffff;border: 0px;">上一步</button>
+								</div>
+								<div class="col-md-2" style="text-align: right;">
+									<button  id="EfileTipcNext" style="background-color: #E0592B;color: #ffffff;border: 0px;" onclick="EfileTipcSendEmail()">邮件发送</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				
+				<div class="col-md-10" id="EcheckFile" style="display: none;margin-top:30px;">
+						<div  class="col-md-8">
+							<div  class="col-md-12">
+								 <div  class="col-md-12">
+									<!-- <select>
+										<option>7月</option>
+									</select>
+									<select>
+										<option>地区</option>
+									</select>
+									<select>
+										<option>已回复</option>
+									</select>   -->
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div style="padding-left:22px;">
+						       	 <div>
+									<form class="form-horizontal">
+										<div class="col-sm-2"></div>
+										<div class="col-sm-10" style="padding:10px;">
+											 <label for="storeName" class="col-sm-2 control-label">公司名称：</label>
+											 <div class="col-sm-3">
+											     <input type="text" class="form-control" name="eCheckFileCompany" id="eCheckFileCompany" placeholder="请输入公司名称...">
+											 </div>
+											  <div class="col-sm-3">
+											      <button type="button" style="background-color:#ED7800;border: 0px;height: 30px;border-radius: 3px;color:#ffffff;" id="eCheckFileSearch">查询</button>
+											  </div>
+										 </div>
+								    </form>
+								</div>
+								<table id="EcheckFileTable" class="table table-bordered table-striped table-hover" style="margin:0px; font-size: 12px;">
+								          <tr>
+								           	<th style="text-align: center;width:20% ">文件名称</th>
+								             <th style="text-align: center;width:20%">所属公司</th>
+								             <th style="text-align: center;width:20%">印章名称</th>
+								             <th style="text-align: center;width:15%">邮箱</th>
+								             <th style="text-align: center;width:10%">状态</th>
+								             <th style="text-align: center;width:15%">查看</th>
+								           </tr>
+								 </table>
+								 <table id="EauditTableData" class="table table-bordered table-striped table-hover"></table>
+							</div>
+							<div class="col-md-12" style="margin-top:50px;">
+								<div class="col-md-10" style="text-align: center;">
+									<button onclick="EbackFile()" id="EbackFile" style="background-color: #8B542F;color: #ffffff;border: 0px;">返回</button>
+								</div>
+							</div>
+						</div>
+					</div>
+			</div>
+			
+			<div class="col-md-12" id="importWord">
+				<div class="col-md-10" id="WselectFile" style="display: none;margin-top:30px;">
+						<div  class="col-md-8">
+							<div  class="col-md-12">
+								<div  class="col-md-12">
+									选择文件：
+									<button style="border: 1px solid #EC7801;border-radius: 5px;height: 30px;line-height: 30px;width: 50px;background-color: #ffffff;" onclick="WsealCheckedFileAll('wordCheck')">全选</button>
+									<button style="border: 1px solid #EC7801;border-radius: 5px;height: 30px;line-height: 30px;width: 50px;background-color: #ffffff;" onclick="WsealCheckedFileNotAll('wordCheck')" >批量</button>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-10">
+							<div  class="col-md-8">
+								<form id="wuploadForm" name="uploadForm" enctype="multipart/form-data">
+								<span id="Wupload"></span>
+								</form>
+								<div class="col-md-12" style="margin-top:50px;">
+									<div class="col-md-4">
+										<button onclick="WselectFilePrev()" id="WselectFilePrev" style="background-color: #8B542F;color: #ffffff;border: 0px;">上一步</button>
+									</div>
+									<div class="col-md-8">
+										<button  id="WselectFileNext" style="background-color: #E0592B;color: #ffffff;border: 0px;" onclick="WselectFileNext()">下一步</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				<div class="col-md-10" id="We-seal" style="display: none;margin-top:30px;">
+						<div  class="col-md-8">
+							<div  class="col-md-12">
+								<div  class="col-md-12">
+									选择电子签章：
+									<button style="border: 1px solid #EC7801;border-radius: 5px;height: 30px;line-height: 30px;width: 50px;background-color: #ffffff;" onclick="WsealCheckedFileAll('WesealFileName')">全选</button>
+									<button style="border: 1px solid #EC7801;border-radius: 5px;height: 30px;line-height: 30px;width: 50px;background-color: #ffffff;" onclick="WsealCheckedFileNotAll('WesealFileName')" >批量</button>
+								</div>
+							</div> 
+						</div>
+						<div class="col-md-12">
+							<div style="padding-left:22px;">
+								<table  class="table table-bordered table-striped table-hover"  style="margin:0px; font-size: 12px;">
+										 <tr> 
+											<th style="text-align: center;" width="20%">文件名称</th>
+											<th style="text-align: center;" width="20%">所属印章</th>
+										</tr>
+								 </table>
+								 <table  id="We-sealTable" class="table table-bordered table-striped table-hover"  style="font-size: 12px;">
+								 </table>
+								 <table width="100%" align="right" >
+								        <tr>
+								        	<td align="right">每页显示
+								        		<select id="We-sealTablePageNums" onchange="pageNum(this.id,'Ee-sealTable','We-sealTablePageId')">
+								        			<option value="5">5</option>
+								        			<option value="10" selected="selected">10</option>
+								        			<option value="20">20</option>
+								        			<option value="50">50</option>
+								        			<option value="100">100</option>
+								        		</select>条<div id="We-sealTablePageId" ></div>
+								        	</td>
+								       </tr>
+								 </table>
+							</div>
+							<div class="col-md-12" style="margin-top:50px;">
+								<div class="col-md-10" style="text-align: right;">
+									<button onclick="WesealPrev()" id="WesealPrev" style="background-color: #8B542F;color: #ffffff;border: 0px;">上一页</button>
+								</div>
+								<div class="col-md-2" style="text-align: right;">
+									<button  onclick="WesealNext()"  id="WesealNext" style="background-color: #E0592B;color: #ffffff;border: 0px;">下一步</button>
+								</div>
+							</div>
+						</div>
+					</div>	
+				<div class="col-md-10" id="WchengePDF" style="display: none;margin-top:30px;">
+						<div  class="col-md-8">
+							<div  class="col-md-12">
+								<div  class="col-md-12">
+									转成PDF:
+									<button style="border: 1px solid #EC7801;border-radius: 5px;height: 30px;line-height: 30px;width: 50px;background-color: #ffffff;  " onclick="WsealCheckedFileAll('WpdfFileName')">全选</button>
+									<button style="border: 1px solid #EC7801;border-radius: 5px;height: 30px;line-height: 30px;width: 50px;background-color: #ffffff;   " onclick="WsealCheckedFileNotAll('WpdfFileName')" >批量</button>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div style="padding-left:22px;">
+								<table  class="table table-bordered table-striped table-hover" style="margin:0px; font-size: 12px;">
+								       <thead>
+								          <tr>
+								           	<th style="text-align: center;" width="50%">文件名称</th>
+								           </tr>
+								       </thead>
+								 </table>
+								 <table  id="WchengePDFTable" class="table table-bordered table-striped table-hover"  style="font-size: 12px;">
+								 </table>
+								 <table width="100%" align="right" >
+								        <tr>
+								        	<td align="right">每页显示
+								        		<select id="WchengePDFTablePageNums" onchange="pageNum(this.id,'WchengePDFTable','WchengePDFTablePageId')">
+								        			<option value="5">5</option>
+								        			<option value="10" selected="selected">10</option>
+								        			<option value="20">20</option>
+								        			<option value="50">50</option>
+								        			<option value="100">100</option>
+								        		</select>条<div id="WchengePDFTablePageId" ></div>
+								        	</td>
+								       </tr>
+								 </table>
+							</div>
+							<div class="col-md-12" style="margin-top:50px;">
+								<div class="col-md-10" style="text-align: right;">
+									<button onclick="WchengePDFPrev()" id="WchengePDFPrev" style="background-color: #8B542F;color: #ffffff;border: 0px;">上一步</button>
+								</div>
+								<div class="col-md-2" style="text-align: right;">
+									<button  id="WchengePDFNext" style="background-color: #E0592B;color: #ffffff;border: 0px;" onclick="WchengePDFNext()">下一步</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+				<div class="col-md-10" id="WsendEmail" style="display: none;margin-top:30px;">
+						<div  class="col-md-8">
+							<div  class="col-md-12">
+								<div  class="col-md-12">
+									发送邮箱:
+									<button style="border: 1px solid #EC7801;border-radius: 5px;height: 30px;line-height: 30px;width: 50px;background-color: #ffffff;  " onclick="WsealCheckedFileAll('WsendEmailName')">全选</button>
+									<button style="border: 1px solid #EC7801;border-radius: 5px;height: 30px;line-height: 30px;width: 50px;background-color: #ffffff;   "  onclick="WsealCheckedFileNotAll('WsendEmailName')" >批量</button>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div style="padding-left:22px;">
+								<table   class="table table-bordered table-striped table-hover" style="margin:0px; font-size: 12px;">
+								       <thead>
+								          <tr>
+								           	<th style="text-align: center;">文件名称</th>
+								             <th style="text-align: center;">默认邮箱</th>
+								           </tr>
+								       </thead>
+								 </table>
+								 <table  id="WsendEmailTable" class="table table-bordered table-striped table-hover"  style="font-size: 12px;">
+								 </table>
+								 <table width="100%" align="right" >
+								        <tr>
+								        	<td align="right">每页显示
+								        		<select id="WsendEmailTablePageNums" onchange="pageNum(this.id,'WsendEmailTable','WsendEmailTablePageId')">
+								        			<option value="5">5</option>
+								        			<option value="10" selected="selected">10</option>
+								        			<option value="20">20</option>
+								        			<option value="50">50</option>
+								        			<option value="100">100</option>
+								        		</select>条<div id="WsendEmailTablePageId" ></div>
+								        	</td>
+								       </tr>
+								 </table>
+							</div>
+							<div class="col-md-12" style="margin-top:50px;">
+								<div class="col-md-10" style="text-align: right;">
+									<button onclick="WsendEmailPrev()" id="WsendEmailPrev" style="background-color: #8B542F;color: #ffffff;border: 0px;">上一步</button>
+								</div>
+								<div class="col-md-2" style="text-align: right;">
+									<button  id="WsendEmailNext" style="background-color: #E0592B;color: #ffffff;border: 0px;" onclick="WsendEmails()">发送</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				
+				<div class="col-md-10" id="WfileTipc" style="display: none;margin-top:30px;">
+						<div  class="col-md-8">
+							<div  class="col-md-12">
+								<div  class="col-md-12">
+									发送邮箱:
+									<button style="border: 1px solid #EC7801;border-radius: 5px;height: 30px;line-height: 30px;width: 50px;background-color: #ffffff;  " onclick="WsealCheckedFileAll('WfileTipcName')">全选</button>
+									<button style="border: 1px solid #EC7801;border-radius: 5px;height: 30px;line-height: 30px;width: 50px;background-color: #ffffff;   "  onclick="WsealCheckedFileNotAll('WfileTipcName')" >批量</button>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div style="padding-left:22px;">
+								<table  class="table table-bordered table-striped table-hover" style="margin:0px; font-size: 12px;">
+								       <thead>
+								          <tr>
+								           	<th style="text-align: center;" width="20%">文件名称</th>
+								            <th style="text-align: center;" width="10%">店号</th>
+								            <th style="text-align: center;" width="10%">店名</th>
+								            <th style="text-align: center;" width="20%">月份营业额报表</th>
+								            <th style="text-align: center;" width="20%">默认邮箱</th>
+								            <th style="text-align: center;" width="20%">选择邮箱</th>
+								           </tr>
+								       </thead>
+								 </table>
+								  <table  id="WfileTipcTable" class="table table-bordered table-striped table-hover"  style="font-size: 12px;">
+								 </table>
+								 <table width="100%" align="right" >
+								        <tr>
+								        	<td align="right">每页显示
+								        		<select id="WfileTipcTablePageNums" onchange="pageNum(this.id,'WfileTipcTable','WfileTipcTablePageId')">
+								        			<option value="5">5</option>
+								        			<option value="10" selected="selected">10</option>
+								        			<option value="20">20</option>
+								        			<option value="50">50</option>
+								        			<option value="100">100</option>
+								        		</select>条<div id="WfileTipcTablePageId" ></div>
+								        	</td>
+								       </tr>
+								 </table>
+							</div>
+							<div class="col-md-12" style="margin-top:50px;">
+								<div class="col-md-10" style="text-align: right;">
+									<button onclick="WfileTipcPrev()" id="WfileTipcPrev" style="background-color: #8B542F;color: #ffffff;border: 0px;">上一步</button>
+								</div>
+								<div class="col-md-2" style="text-align: right;">
+									<button  id="WfileTipcNext" style="background-color: #E0592B;color: #ffffff;border: 0px;" onclick="WfileTipcSendEmail()">发送</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				
+				<div class="col-md-10" id="WcheckFile" style="display: none;margin-top:30px;">
+						<div  class="col-md-8">
+							<div  class="col-md-12">
+								<div  class="col-md-12">
+									<!-- <select>
+										<option>7月</option>
+									</select>
+									<select>
+										<option>地区</option>
+									</select>
+									<select>
+										<option>已回复</option>
+									</select> -->
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div style="padding-left:22px;">
+								<table  class="table table-bordered table-striped table-hover" style="margin:0px; font-size: 12px;">
+								       <thead>
+								          <tr>
+								           	<th style="text-align: left;width: 20%">文件名称</th>
+								             <th style="text-align: left;width: 20%">所属公司</th>
+								             <th style="text-align: center;width: 20%">印章名称</th>
+								             <th style="text-align: center;width: 20%">邮箱</th>
+								             <th style="text-align: center;width: 20%">状态</th>
+								           </tr>
+								       </thead>
+								 </table>
+								  <table  id="WcheckFileTable" class="table table-bordered table-striped table-hover"  style="font-size: 12px;">
+								 </table>
+								 <table width="100%" align="right" >
+								        <tr>
+								        	<td align="right">每页显示
+								        		<select id="WcheckFileTablePageNums" onchange="pageNum(this.id,'WcheckFileTable','WcheckFileTablePageId')">
+								        			<option value="5">5</option>
+								        			<option value="10" selected="selected">10</option>
+								        			<option value="20">20</option>
+								        			<option value="50">50</option>
+								        			<option value="100">100</option>
+								        		</select>条<div id="WcheckFileTablePageId" ></div>
+								        	</td>
+								       </tr>
+								 </table>
+							</div>
+							<div class="col-md-12" style="margin-top:50px;">
+								<div class="col-md-10" style="text-align: center;">
+									<button onclick="WbackFile()" id="backFile" style="background-color: #8B542F;color: #ffffff;border: 0px;">返回</button>
+								</div>
+							</div>
+						</div>
+					</div>
+			</div>	
+        </div>
+	</div>	
+</div>
+<div class="modal fade" id="EsendTureMode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  	<div class="modal-dialog modal-sm">
+    	<div class="modal-content" style="width: 400px;top:200px;">
+	       <div class="modal-header" style="background: #ED7800;text-align: center;color:#ffffff;">
+	        	<h4 class="modal-title" id="myModalLabel">发送邮箱</h4>
+	       </div>
+	       <div class="modal-body">
+		  	   <div class="modal-header" style="text-align: center;">
+		      		恭喜您！3条文件已发送成功！
+		       </div>
+		       <div class="modal-footer" style="text-align: center;">
+		        	<button type="button" class="btn btn btn-info btn-sm" onclick ="ElookFile()">查看</button>
+		        	<button type="button" class="btn btn btn-info btn-sm" onclick ="EcheckFile()">核对</button>
+		       </div>
+	       </div>
+        </div>
+ 	</div>
+</div>
+<div class="modal fade" id="WsendTureMode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  	<div class="modal-dialog modal-sm">
+    	<div class="modal-content" style="width: 400px;top:200px;">
+	       <div class="modal-header" style="background: #ED7800;text-align: center;color:#ffffff;">
+	        	<h4 class="modal-title" id="myModalLabel">发送邮箱</h4>
+	       </div>
+	       <div class="modal-body">
+		  	   <div class="modal-header" style="text-align: center;">
+		      		 邮件已发送成功！
+		       </div>
+		       <div class="modal-footer" style="text-align: center;">
+		        	<button type="button" class="btn btn btn-info btn-sm" onclick ="WlookFile()">查看</button>
+		        	<button type="button" class="btn btn btn-info btn-sm" onclick ="WcheckFile()">核对</button>
+		       </div>
+	       </div>
+        </div>
+ 	</div>
+</div>
+<div class="modal fade" id="moreEamilModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  	<div class="modal-dialog modal-sm">
+    	<div class="modal-content" style="width: 400px;top:200px;">
+	       <div class="modal-header" style="background: #bdbdbd;text-align: center;color:#ffffff;">
+	        	<h4 class="modal-title" id="myModalLabel">选择更多邮箱</h4>
+	       </div>
+	       <div class="modal-body" >
+		  	   <div class="modal-header" style="text-align: center;" id="moreEamilModalBody">
+		      		
+		       </div>
+		       <div class="modal-footer" style="text-align: center;">
+		        	<button type="button" class="btn btn btn-info btn-sm" onclick ="checkedEmail()" id="moreEamilModalButton">确定</button>
+        			<button type="button" class="btn btn btn-info btn-sm" data-dismiss="modal">取消</button>
+		       </div>
+	       </div>
+        </div>
+ 	</div>
+</div>
+<div class="modal fade" id="WmoreEamilModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  	<div class="modal-dialog modal-sm">
+    	<div class="modal-content" style="width: 400px;top:200px;">
+	       <div class="modal-header" style="background: #bdbdbd;text-align: center;color:#ffffff;">
+	        	<h4 class="modal-title" id="myModalLabel">选择更多邮箱</h4>
+	       </div>
+	       <div class="modal-body" >
+		  	   <div class="modal-header" style="text-align: center;" id="WmoreEamilModalBody">
+		      		
+		       </div>
+		       <div class="modal-footer" style="text-align: center;">
+		        	<button type="button" class="btn btn btn-info btn-sm" onclick ="WcheckedEmail()" id="WmoreEamilModalButton">确定</button>
+        			<button type="button" class="btn btn btn-info btn-sm" data-dismiss="modal">取消</button>
+		       </div>
+	       </div>
+        </div>
+ 	</div>
+</div>
+<script type="text/javascript">
+function ready(id,showId,month){
+	$("#companyId").val(id);
+	$("#"+showId+"").show(0);
+	$("#month").val(month);
+	
+	if(showId=='fileImport'){
+	  	ulliShow(1,1,0,0);
+	}
+	
+	if(showId=='Ee-seal'){
+		esealTableShow();
+	  	ulliShow(3,3,2,2);
+	}
+	
+	if(showId=='EsendEmail'){
+// 		emailTableShow();
+		subjectEmailTableShow();
+		$("#EsendEmail").hide(0);
+		$("#EfileTipc").show(0);
+		ulliNext(6, 5, 4, 4);
+	}
+	if(showId=='EchengePDF'){
+		pdfTableShow();
+		$("#EesealPrev").remove();
+		ulliShow(4,4,3,3);
+	}
+
+	if(showId=='WfileTipc'){
+		WfileTipcShow();
+		ulliShow(6,6,5,5);
+	}
+	
+	if(showId=='EcheckFile'){
+		auditTableShow(null);
+		$("#EesealPrev").remove();
+		ulliShow(7,7,6,6);
+	}
+}
+
+
+
+function ulliShow(a,b,c,d){
+	$("#ul").find("li").eq(a).attr("class","lib");
+  	$("#ul").find("li").eq(b).find("img").attr("src","/burgerking/resources/hbFrontHtml/img/u48.png");
+  	$("#ul").find("li").eq(c).attr("class","lia");
+  	$("#ul").find("li").eq(d).find("img").attr("src","/burgerking/resources/hbFrontHtml/img/u48.png");
+}
+
+function ulliPrev(a,b,c,d,e){
+	  $("#ul").find("li").eq(a).find("img").attr("src","/burgerking/resources/hbFrontHtml/img/u36.png");
+	  $("#ul").find("li").eq(b).attr("class","lib");
+	  $("#ul").find("li").eq(c).find("img").attr("src","/burgerking/resources/hbFrontHtml/img/u48.png");
+	  $("#ul").find("li").eq(d).attr("class","lia");
+	  $("#ul").find("li").eq(e).find("img").attr("src","/burgerking/resources/hbFrontHtml/img/u48.png");
+}
+function ulliNext(a,b,c,d){
+	  $("#ul").find("li").eq(a).find("img").attr("src","/burgerking/resources/hbFrontHtml/img/u48.png");
+	  $("#ul").find("li").eq(b).attr("class","lia");
+	  $("#ul").find("li").eq(c).attr("class","lib");
+	  $("#ul").find("li").eq(d).find("img").attr("src","/burgerking/resources/hbFrontHtml/img/u36.png");
+}
+</script>
+<script type="text/javascript">
+		$("#addExcelFile").hover(function() {
+			$("#addExcelFileSun").height($("#addExcelFileSun").parent().height());
+			$("#addExcelFileSun").width($("#addExcelFileSun").parent().width());
+			$("#addExcelFileSun").addClass('addFile');
+		}, function() {
+			$("#addExcelFileSun").removeClass('addFile');
+			$("#addExcelFileSun").height(0);
+			$("#addExcelFileSun").width(0);
+		});
+		$("#addWordFile").hover(function() {
+			$("#addWordFileSun").height($("#addWordFileSun").parent().height());
+			$("#addWordFileSun").width($("#addWordFileSun").parent().width());
+			$("#addWordFileSun").addClass('addFile');
+		}, function() {
+			$("#addWordFileSun").removeClass('addFile');
+			$("#addWordFileSun").height(0);
+			$("#addWordFileSun").width(0);
+		});
+	
+</script>
+<script type="text/javascript">
+function pageNum(id,tableId,pageId){
+	var pageNum=$("#"+id+"").val();
+	goPage(1,pageNum,tableId,pageId);
+}
+function goPage(pno,psize,tableId,tablePageId){
+    var itable = document.getElementById(tableId);
+   	var num = itable.rows.length;//表格所有行数(所有记录数)
+    var totalPage = 0;//总页数
+    var pageSize = psize;//每页显示行数
+    //总共分几页 
+    if(num/pageSize > parseInt(num/pageSize)){   
+            totalPage=parseInt(num/pageSize)+1;   
+       }else{   
+           totalPage=parseInt(num/pageSize);   
+       }   
+    var currentPage = pno;//当前页数
+    var startRow = (currentPage - 1) * pageSize+1;//开始显示的行  31 
+       var endRow = currentPage * pageSize;//结束显示的行   40
+       endRow = (endRow > num)? num : endRow;    40
+       console.log(endRow);
+       //遍历显示数据实现分页
+    for(var i=1;i<(num+1);i++){    
+        var irow = $("#"+tableId+"").find("tr").eq(i-1);
+        if(i>=startRow && i<=endRow){
+        	irow.show(0);  
+        }else{
+        	irow.hide(0);
+        }
+    }
+    var pageEnd = document.getElementById("pageEnd");
+    var tempStr = "共"+num+"条记录 ，分"+totalPage+"页， 当前第"+currentPage+"页，";
+    if(currentPage>1){
+        tempStr += "<a href='javascript:void(0)' onClick=\"goPage("+(1)+","+psize+","+tableId+")\">首页</a>";
+        tempStr += "<a href='javascript:void(0)' onClick=\"goPage("+(currentPage-1)+","+psize+",'"+tableId+"','"+tablePageId+"')\"><上一页</a>"
+    }else{
+        tempStr += "首页";
+        tempStr += "<上一页";    
+    }
+
+    if(currentPage<totalPage){
+        tempStr += "<a href='javascript:void(0)' onClick=\"goPage("+(currentPage+1)+","+psize+",'"+tableId+"','"+tablePageId+"')\">下一页></a>";
+        tempStr += "<a href='javascript:void(0)' onClick=\"goPage("+(totalPage)+","+psize+",'"+tableId+"','"+tablePageId+"')\">尾页</a>";
+    }else{
+        tempStr += "下一页>";
+        tempStr += "尾页";    
+    }
+
+    document.getElementById(tablePageId).innerHTML = tempStr;
+    
+}
+</script>

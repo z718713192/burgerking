@@ -1,0 +1,151 @@
+<style type="text/css">
+    #top_alert {
+		width: 180px;
+		padding: 10px 0;
+		background: #4A4242;
+		border: 1px solid #4A4242;
+		color: #FFFFFF;
+		position: absolute;
+		text-align: center;
+		left: 25%;
+		top: 0;
+	}
+</style>
+<div class="col-xs-12 col-md-12">
+<!-- Horizontal Form -->
+<div class="box" style="height: 100%;">
+  <div class="box-header with-border">
+    <h3 class="box-title">修改物流公司</h3>
+  </div><!-- /.box-header -->
+  <!-- form start -->
+  <form class="form-horizontal">
+    <div class="box-body">
+      <input type="hidden" name="id" id="id">
+      <div class="form-group">
+        <label for="expressId" class="col-sm-3 control-label">物流公司ID：</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="expressId" id="expressId" placeholder="请输入物流公司ID...">
+        </div>
+        <label id="expressIdl">
+        	<font style="color: red;" id="expressIdf"></font>
+        </label>
+      </div>
+      <div class="form-group">
+        <label for="expressName" class="col-sm-3 control-label">物流公司名称：</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="expressName" id="expressName" placeholder="请输入物流公司名称...">
+        </div>
+        <label id="expressNamel">
+        	<font style="color: red;" id="expressNamef"></font>
+        </label>
+      </div>
+     
+    </div><!-- /.box-body -->
+    <div class="box-footer" align="center">
+      <button type="button" class="btn btn-info" id="update">保存</button>
+      <button type="button" class="btn btn-info" id="reset">重置</button>
+      <button type="button" class="btn btn-info" id="back">返回</button>
+    </div><!-- /.box-footer -->
+  </form>
+  <div id="top_alert" class="top_alert" style="display: none;"><span></span></div>
+</div><!-- /.box -->
+</div>
+ <script type="text/javascript">
+ function ready(id,expressId,expressName){
+	$('#id').val(id);
+	$('#expressId').val(expressId);
+	$('#expressName').val(expressName);
+	$('#expressId').attr('disabled','disabled');
+ }
+ 
+ function showmessage(text) {
+		
+		$('#top_alert').empty().append(
+				'<span>' + text + '</span>');
+		$('#top_alert').css('display', 'block');
+		
+		$('.top_alert').css({ 
+			position:'absolute', 
+			left: ($(window).width() - $('.top_alert').outerWidth())/3, 
+			top: ($(window).height() - $('.top_alert').outerHeight())/8 + $(".content").scrollTop() 
+			}); 
+		}
+$('#update').click(function(){
+	 var expressId=$.trim($('#expressId').val());
+	 var expressName=$.trim($('#expressName').val());
+	 var id=$.trim($('#id').val());
+	 if(expressName==''){
+		 $('#expressNamef').html('请输入物流公司名称');
+		 $('#expressNamel').css('display','block');
+		 return false;
+	 }else{
+		 if(expressName.length>80){
+			 $('#expressNamef').html('物流公司名称不能大于80个字符');
+			 $('#expressNamel').css('display','block');
+			 return false;
+		 }
+		 $('#expressNamef').html('');
+		 $('#expressNamel').css('display','none');
+	 }
+	 if(!validateExpressName()){
+		 return false;
+	 }
+	 var json={"expressId":expressId,"expressName":expressName,"id":id};
+	 $.ajax({
+			type: "POST",
+	        url: "/burgerking/sys/updateExpressCompany",
+	        data: json,
+	        dataType: "json",
+	        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+		    cache : false,
+		    async : false,
+	        success: function(data){
+	        	if(data.res==true){
+	        		showmessage('保存成功');
+	        		$('#top_alert').fadeOut(3000);
+	        	}else{
+	        		showmessage('保存失败');
+	        		$('#top_alert').fadeOut(3000);
+	        	}
+	        }
+	    });
+});
+
+function validateExpressName(){
+	 var expressName=$.trim($('#expressName').val());
+	 var expressId=$.trim($('#expressId').val());
+	 if($.trim(expressName).length==0){
+		 return false;
+	 }
+	  var flag=false;
+	  $.ajax({
+			type: "POST",
+	        url: "/burgerking/sys/validateExpressNameAndNotExpressId",
+	        data: {"expressId":expressId,"expressName":expressName},
+	        dataType: "json",
+	        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+		    cache : false,
+		    async : false,
+	        success: function(data){
+	        	if(data.res==true){
+	        		$('#expressNamef').html('物流公司名称已经存在');
+	    			$('#expressNamel').css('display', 'block');
+	        	}else{
+	        		$('#expressNamef').html('');
+	        		$('#expressNamel').css('display', 'none');
+	        		flag=true;
+	        	}
+	        },
+	        error:function(msg){
+	        	$('#expressNamef').html('物流公司名称校验出现异常');
+	    		$('#expressNamel').css('display', 'block');
+	        }
+		}); 
+	  return flag;
+}
+$('#back').click(function(){
+	$("#maincontent").load('../resources/html/sys/expressCompanyManager.html',function(){
+		ready();
+	});
+});
+</script>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>汉堡王登录首页</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	  <link rel="shortcut icon" href="../resources/img/logo.png"
+		type="image/x-icon" />
+	<!-- Bootstrap 3.3.5 -->
+	<link rel="stylesheet"
+		href="../resources/bootstrap/css/bootstrap.min.css">
+	<!-- Theme style -->
+	<link rel="stylesheet" href="../resources/dist/css/AdminLTE.min.css">
+	<!-- iCheck -->
+	<link rel="stylesheet" href="../resources/plugins/iCheck/square/blue.css">
+  </head>
+  <body class="hold-transition login-page" style="background:#ffffff;">
+    <div   style="background-image: url('../resources/img/u4.png');height:45px;margin-top:50px;">
+	  	<div style="position: relative;left: 20%;top:-40%;"><img alt="" src="../resources/img/u32.png" width="80px;"></div>
+	</div>
+    <div class="login-box" style="margin-top:35px;">
+      <div class="login-logo" style="font-size: 14px;color:#ED7800;font-weight: bold;">
+         	账户登录 
+      </div>
+      <div class="login-box-body">
+        <form action="/burgerking/sys/hbFrontIndex" method="post" id="form">
+          <div class="form-group has-feedback">
+          	<div style="color:#ED7800;border: 1px solid #ED7800;border-radius: 5px;height: 35px;line-height: 35px;padding-left:10px;">
+          		  <span>账号</span>		
+          		  <input type="text" name="username" id="username" style="color:#ED7800;border: 0px;width: 80%;height: 25px;line-height: 25px;padding-left:10px;border-left:1px solid #ED7800; " placeholder="请输入用户名..." >
+          	</div>
+            <label id="loginNamel">
+            	<font id="loginNamef" style="color: red;"></font>
+            </label>
+          </div>
+          <div class="form-group has-feedback">
+          	<div style="color:#ED7800;border: 1px solid #ED7800;border-radius: 5px;height: 35px;line-height: 35px;padding-left:10px;">
+          		  <span>密码</span>		
+        		 <input type="password" style="color:#ED7800;border: 0px;width: 80%;height: 25px;line-height: 25px;padding-left:10px;border-left:1px solid #ED7800; " name="password" id="password" placeholder="请输入密码..." >
+			</div>
+             <label id="passwordl">
+            	<font id="passwordf" style="color: red;"></font>
+            </label>
+          </div>
+          <div class="row">
+            <div class="col-xs-12" align="center">
+              <button type="button" style="width: 100%;background-color: #ED7800;border: 0px; border-radius: 5px;height:35px;color:#ffffff;"  onclick="on()">登录</button>&nbsp;&nbsp;
+            </div><!-- /.col -->
+          </div>
+        </form>
+
+      </div><!-- /.login-box-body -->
+    </div><!-- /.login-box -->
+
+    <!-- jQuery 2.1.4 -->
+    <script src="../resources/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <!-- Bootstrap 3.3.5 -->
+    <script src="../resources/bootstrap/js/bootstrap.min.js"></script>
+    <script>
+    function on() {
+		var name = $.trim($('#username').val());
+		var pass = $.trim($('#password').val());
+		if (name == '') {
+			$('#usernamef').html('请输入用户名');
+			$('#usernamef').css('display', 'block');
+			return false;
+		} else {
+			$('#usernamef').html(' ');
+			$('#usernamef').css('display', 'none');
+		}
+		if (pass == '') {
+			$('#passwordf').html('请输入密码');
+			$('#passwordf').css('display', 'block');
+			return false;
+		} else {
+			$('#passwordf').html('');
+			$('#passwordf').css('display', 'none');
+		}
+		$('#form').submit();
+	}
+    </script>
+  </body>
+</html>

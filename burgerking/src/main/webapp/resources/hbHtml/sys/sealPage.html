@@ -1,0 +1,237 @@
+<style type="text/css">
+	.colmd4{
+		text-align: center;
+		padding-top:20px;
+		color:#ffffff;
+	}
+	 #top_alert {
+		width: 180px;
+		padding: 10px 0;
+		background: #4A4242;
+		border: 1px solid #4A4242;
+		color: #FFFFFF;
+		position: absolute;
+		text-align: center;
+		left: 25%;
+		top: 0;
+	}
+	.divtable{
+		overflow: hidden; text-overflow: ellipsis; white-space: nowrap;width:200px;
+	}
+	 
+</style>
+
+
+<div id="main" style="width: 100%;padding:0px;">
+	<div  class="col-md-12" style="background-color: #F2F2F2;height:40px;font-size: 14px;line-height: 40px;margin-top:10px;">
+		<div  class="col-md-2"></div>
+		<div  class="col-md-10">当前位置：印章管理 </div>
+	</div>
+	<div class="col-md-12" >
+		<div class="col-md-2"></div>
+		<div class="col-md-8 box-body">
+			<div>
+			<form class="form-horizontal">
+					   <div class="col-sm-1">
+					   <input type="button" onclick="toAddpage()" value="增加" style="margin:10px;background-color:#ED7800;border: 0px;height: 30px;border-radius: 3px;color:#ffffff;"/>
+					   </div>
+				       <div class="col-sm-11" style="padding:10px;">
+					       <label for="sealNameLabel" class="col-sm-2 control-label">印章名称：</label>
+					        <div class="col-sm-2">
+					          <input type="text" class="form-control" name="sealName" id="sealName" placeholder="请输入印章名称...">
+					        </div>
+					        <label for="sealComLabel" class="col-sm-2 control-label">公司：</label>
+					        <div class="col-sm-3">
+					          <input type="text" class="form-control" name="sealCom" id="sealCom" placeholder="请输入公司...">
+					        </div>
+					       <div class="col-sm-2">
+					          <button type="button" style="background-color:#ED7800;border: 0px;height: 30px;border-radius: 3px;color:#ffffff;" id="search">查询</button>
+					        </div>
+				        </div>
+		      </form>
+			</div>
+			<div>
+		        <table id="example1" class="table table-bordered table-striped table-hover" >
+		          <thead>
+		            <tr>
+		             <th style="text-align: left;max-width:25%"  >印章名称</th>
+		              <th style="text-align: left;max-width:25%">公司</th>
+		              <th style="text-align: center;max-width:20%">有权使用用户数量</th>
+		              <th style="text-align: center;max-width:10%">门店数</th> 
+		              <th style="text-align: center;max-width:20%">操作</th>
+		            </tr>
+		          </thead>
+		          <tbody>
+		            
+		          </tbody>
+		        </table>
+	        </div>
+        </div>
+        <div class="col-md-2"></div>
+	</div>	
+</div>
+<div id="top_alert" class="top_alert" style="display: none;"><span></span></div>
+
+<!-- delete Modal -->
+<div class="modal fade" id="deleMode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">删除确认</h4>
+      </div>
+      <div class="modal-body">
+  	  <p>你真的要将该印章吗？</p>
+      <div class="modal-footer">
+     	 <button type="button" class="btn btn btn-info btn-sm" id="delButton" value="" onclick="delSeal()">确定</button>
+        <button type="button" class="btn btn btn-info btn-sm" data-dismiss="modal">取消</button>
+      </div>
+    </div>
+  </div>
+ </div>
+</div>
+<script type="text/javascript">
+function ready(){
+	 initTable(null,null);
+
+}
+
+
+$('#search').click(function(){
+	 var sealName = $.trim($('#sealName').val());
+	 var sealCom = $.trim($('#sealCom').val());
+	 initTable(sealName,sealCom);
+});
+function initTable(sealName,sealCom) {
+	var path="/burgerking/sys/findSeals";
+	if(sealName!=null){
+		path += "?sealName="+sealName;
+	}
+	if(sealCom!=null){
+		path += "&sealCom="+sealCom;
+	}
+	$("#example1").dataTable({
+		"bFilter": false,//去掉搜索框
+		//"bAutoWidth": true, //自适应宽度
+		"sPaginationType" : "full_numbers",
+		//"sAjaxDataProp" : "aData",
+		"bLengthChange": false, //改变每页显示数据数量
+		"bSort": false,
+		"bDestroy" : true,
+		"bProcessing" : true,
+		"sAjaxSource" : path,
+		"bServerSide" : true,
+		"oLanguage" : {
+			"sProcessing" : "正在加载中......",
+			//"sLengthMenu" : "每页显示 _MENU_ 条记录",
+			"sZeroRecords" : "没有数据！",
+			"sEmptyTable" : "表中无数据存在！",
+			"sInfo" : "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+			"sInfoEmpty" : "显示0到0条记录",
+			"sInfoFiltered" : "数据表中共为 _MAX_ 条记录",
+			//"sSearch" : "搜索",
+			"oPaginate" : {
+				"sFirst" : "首页",
+				"sPrevious" : "上一页",
+				"sNext" : "下一页",
+				"sLast" : "末页"
+			}
+		},
+		 "aoColumnDefs":
+	      	 [
+	      	   {'bVisible': false, 'aTargets': []},
+	      	   {'bSortable': false, 'aTargets': [0,1,2,3,4]},
+	      	 {
+	               "aTargets": [0],
+	               "mData": null,
+	               "mRender": function (data, type, full) {
+	                   return '<div  class="divtable" style="text-align: left;"   data-toggle="tooltip" data-placement="bottom" title="'+data[1]+'">'+data[1]+'</div>';//'+data[1]+'
+	               }
+	     	  },
+	     	 {
+	               "aTargets": [1],
+	               "mData": null,
+	               "mRender": function (data, type, full) {
+	                   return '<div class="divtable" style="text-align: left;"   data-toggle="tooltip" data-placement="bottom" title="'+data[2]+'">'+data[2]+'</div>';
+	               }
+	     	  },{
+	               "aTargets": [2],
+	               "mData": null,
+	               "mRender": function (data, type, full) {
+	                   return '<div style="text-align: center;">'+data[3]+'</div>';
+	               }
+	     	  },{
+	               "aTargets": [3],
+	               "mData": null,
+	               "mRender": function (data, type, full) {
+	                   return '<div style="text-align: center;">'+data[4]+'</div>';
+	               }
+	     	  },
+	      	 {
+	               "aTargets": [4],
+	               "mData": null,
+	               "mRender": function (data, type, full) {
+	                   return '<div style="text-align: center;"><button onclick="modify(\''+data[0]+'\')" >详情</button>'+'<button onclick="del(\''+data[0]+'\')" >删除</button>'+'</div>';
+	               }
+	     	  }]
+	});
+}
+
+function del(id){
+	$("#delButton").attr("value",id);
+	$('#deleMode').modal({backdrop: 'static', keyboard: false});
+}
+function delSeal(){
+	 $.ajax({
+			type: "POST",
+	        url: "/burgerking/sys/delSealById",
+	        data: {"id":$('#delButton').attr('value')},
+	        dataType: "json",
+	        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+		    cache : false,
+		    async : false,
+	        success: function(data){
+	        	 if(data.code==400){
+		        		location.href = "/burgerking/sys/hbLogin";
+		        }else{
+		        	if(data.res=true){
+		        		$('#deleMode').modal('hide');
+		        		initTable(null);
+		        		showmessage('删除成功');
+		        		$('#top_alert').fadeOut(3000);
+		        	}else{
+		        		showmessage('删除失败');
+		        		$('#top_alert').fadeOut(3000);
+		        	}
+		        }
+	        }
+	 });
+}
+
+function toAddpage(){
+	$("#maincontent").load('../resources/hbHtml/sys/sealAddPage.html',function(){
+		ready();
+	});
+}
+
+function modify(id){
+	
+	$("#maincontent").load('../resources/hbHtml/sys/sealModifyPage.html',function(){
+		ready(id);
+	});
+}
+
+function showmessage(text) {
+	
+	$('#top_alert').empty().append(
+			'<span>' + text + '</span>');
+	$('#top_alert').css('display', 'block');
+	
+	$('.top_alert').css({ 
+		position:'absolute', 
+		left: ($(window).width() - $('.top_alert').outerWidth())/3, 
+		top: ($(window).height() - $('.top_alert').outerHeight())/8 + $(".content").scrollTop() 
+		}); 
+	}
+</script>
+

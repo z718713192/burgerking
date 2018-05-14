@@ -1,0 +1,163 @@
+<style type="text/css">
+	.colmd4{
+		text-align: center;
+		padding-top:20px;
+		color:#ffffff;
+	}
+	.colmd2{
+		text-align: right;
+		height:35px;
+		line-height: 35px;
+	}
+	 #top_alert {
+		width: 180px;
+		padding: 10px 0;
+		background: #4A4242;
+		border: 1px solid #4A4242;
+		color: #FFFFFF;
+		position: absolute;
+		text-align: center;
+		left: 25%;
+		top: 0;
+	}
+</style>
+
+
+<div id="main" style="width: 100%;padding:0px;">
+	<div  class="col-md-12" style="background-color: #F2F2F2;height:40px;font-size: 14px;line-height: 40px;margin-top:10px;">
+		<div  class="col-md-2"></div>
+		<div  class="col-md-10">当前位置：分公司管理</div>
+	</div>
+	<div class="col-md-12" >
+		<div class="col-md-2"></div>
+		<div class="col-md-5">
+			<div class="col-md-12" style="height: 30px;line-height: 30px;">分公司信息：</div>
+			<div class="col-md-12">
+				<div class="col-md-4 colmd2">公司名称：</div>		
+				<div class="col-md-8"><input type="text" id="name" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid;width: 100%" placeholder="请输入公司名称" onfocus="removeCss(this.id)" /></div>	
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-4 colmd2">识别号：</div>		
+				<div class="col-md-8"><input type="text" id="identifyNumber" onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');"  style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid;width: 100%" placeholder="请输入识别号"  onfocus="removeCss(this.id)"/></div>	
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-4 colmd2">总机：</div>		
+				<div class="col-md-8"><input type="text" id="phone" onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');"  style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid;width: 100%" placeholder="请输入总机"  onfocus="removeCss(this.id)"/></div>	
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-4 colmd2">地址：</div>		
+				<div class="col-md-8"><input type="text" id="address" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid;width: 100%" placeholder="请输入地址" onfocus="removeCss(this.id)" /></div>	
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-4 colmd2">邮箱：</div>		
+				<div class="col-md-8"><input type="text" id="email" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid;width: 100%" placeholder="请输入邮箱" onfocus="removeCss(this.id)" /></div>	
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-4 colmd2">邮箱密码：</div>		
+				<div class="col-md-8"><input type="text" id="emailPassword" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid;width: 100%" placeholder="请输入邮箱密码" onfocus="removeCss(this.id)" /></div>	
+			</div>
+			<div class="col-md-12" style="padding-left:40%;padding-top:30px;">
+				<button onclick="savaCompany()" style="border: 0px;border-radius: 5px;background-color: #E0592B;height:30px;width: 80px;color:#ffffff;">确定</button>
+				<button onclick="back()" style="border: 0px;border-radius: 5px;background-color: #E0592B;height:30px;width: 80px;color:#ffffff;" id="update" >返回</button>
+			</div>
+        </div>
+        <div class="col-md-2"></div>
+	</div>	
+</div>
+
+<script type="text/javascript">
+function ready(){
+
+}
+function savaCompany(){
+	var name=$("#name").val();
+	var identifyNumber=$("#identifyNumber").val();
+	var phone=$("#phone").val();
+	var address=$("#address").val();
+	var email=$("#email").val();
+	var emailPassword=$("#emailPassword").val();
+	
+	if(name==null || name==''){
+		$("#name").css("background-color","red");
+		return;
+	}
+	if(identifyNumber==null || identifyNumber==''){
+		$("#identifyNumber").css("background-color","red");
+		return;
+	}
+	if(phone==null || phone==''){
+		$("#phone").css("background-color","red");
+		return;
+	}else{
+		var myreg = /^1(3|4|5|7|8)\d{9}$/; 
+		var mytelp= /^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/;
+		if(!myreg.test(phone) && !mytelp.test(phone)) 
+		{ 
+		    alert('请输入有效的号码！'); 
+		    $("#phone").css("background-color","red");
+		    return false; 
+		} 
+	}
+	
+	if(address==null || address==''){
+		$("#address").css("background-color","red");
+		return;
+	}
+	if(email==null || email==''){
+		$("#email").css("background-color","red");
+		return;
+	}else{
+		var myreg= /^([0-9A-Za-z\-_\.]+)@([0-9a-z]+\.[a-z]{2,3}(\.[a-z]{2})?)$/g; ;
+		if(!myreg.test(email)) 
+		{ 
+		    alert('请输入合法的email！'); 
+		    $("#email").css("background-color","red");
+		    return false; 
+		} 
+	}
+	if(emailPassword==null || emailPassword==''){
+		$("#emailPassword").css("background-color","red");
+		return;
+	}
+	
+	 $.ajax({
+			type: "POST",
+	        url: "/burgerking/sys/savaCompany",
+	        data: {
+	        	"csName":name,
+	        	"identifyNumber":identifyNumber,
+	        	"phone":phone,
+	        	"address":address,
+	        	"email":email,
+	        	"emailPassword":emailPassword
+	        },
+	        dataType: "json",
+	        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+		    cache : false,
+		    async : false,
+	        success: function(data){
+	        	if(data.code==400){
+	        		location.href = "/burgerking/sys/hbLogin";
+	        	}else{
+	 				if(data.res){
+	 					$("#maincontent").load('../resources/hbHtml/sys/branchOfficePage.html',function(){
+	 						ready();
+	 					});
+	 				}else{
+ 		        		alert('保存失败');
+ 		        	}
+	        	}
+	        }
+	 });
+}
+function  back(){
+	$("#maincontent").load('../resources/hbHtml/sys/branchOfficePage.html',function(){
+			ready();
+		});
+}
+function removeCss(id){
+	$("#"+id+"").css("background-color","#ffffff");
+}
+
+</script>
+

@@ -1,0 +1,152 @@
+<style type="text/css">
+    #top_alert {
+		width: 180px;
+		padding: 10px 0;
+		background: #4A4242;
+		border: 1px solid #4A4242;
+		color: #FFFFFF;
+		position: absolute;
+		text-align: center;
+		left: 25%;
+		top: 0;
+	}
+</style>
+<div class="col-xs-12 col-md-12">
+<!-- Horizontal Form -->
+<div class="box" style="height: 100%;">
+  <div class="box-header with-border">
+    <h3 class="box-title">修改用户</h3>
+  </div><!-- /.box-header -->
+  <!-- form start -->
+  <form class="form-horizontal">
+    <div class="box-body">
+      <input type="hidden" name="id" id="id">
+      <div class="form-group">
+        <label for="username" class="col-sm-3 control-label">用户名：</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="username" id="username" placeholder="请输入用户名...">
+        </div>
+        <label id="userl">
+        	<font style="color: red;" id="userf"></font>
+        </label>
+      </div>
+      <div class="form-group">
+        <label for="password" class="col-sm-3 control-label">密码：</label>
+        <div class="col-sm-6">
+          <input type="password" class="form-control" name="password" id="password" placeholder="请输入密码...">
+        </div>
+        <label id="passl">
+        	<font style="color: red;" id="passf"></font>
+        </label>
+      </div>
+      <div class="form-group">
+        <label for="agencyId" class="col-sm-3 control-label">所属机构名称：</label>
+        <div class="col-sm-6">
+          <label for="agencyName" class="control-label" id="agencyName"></label>
+          <input type="hidden" name="agencyId" id="agencyId">
+        </div>
+      </div>
+     
+    </div><!-- /.box-body -->
+    <div class="box-footer" align="center">
+      <button type="button" class="btn btn-info" id="save">保存</button>
+      <button type="button" class="btn btn-info" id="reset">重置</button>
+      <button type="button" class="btn btn-info" id="back">返回</button>
+    </div><!-- /.box-footer -->
+  </form>
+  <div id="top_alert" class="top_alert" style="display: none;"><span></span></div>
+</div><!-- /.box -->
+</div>
+ <script type="text/javascript">
+ function ready(id,username){
+	$('#id').val(id);
+	$('#username').val(username);
+	$('#username').attr('disabled','disabled');
+	$.ajax({
+		type: "GET",
+        url: "/burgerking/sys/findAgencyByUserId",
+        data: {"id":id},
+        dataType: "json",
+        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+	    cache : false,
+	    async : false,
+        success: function(data){
+        	$('#agencyId').val(data.agency[0].agencyId);
+        	$('#agencyName').html(data.agency[0].agencyName);
+        }
+    });
+ }
+ 
+ function showmessage(text) {
+		
+		$('#top_alert').empty().append(
+				'<span>' + text + '</span>');
+		$('#top_alert').css('display', 'block');
+		
+		$('.top_alert').css({ 
+			position:'absolute', 
+			left: ($(window).width() - $('.top_alert').outerWidth())/3, 
+			top: ($(window).height() - $('.top_alert').outerHeight())/8 + $(".content").scrollTop() 
+			}); 
+		}
+ $('#save').click(function(){
+	 var username=$.trim($('#username').val());
+	 var password=$.trim($('#password').val());
+	 var agencyId=$.trim($('#agencyId').val());
+	 var id=$.trim($('#id').val());
+	 if(username==''){
+		 $('#userf').html('请输入用户名');
+		 $('#userl').css('display','block');
+		 return false;
+	 }else{
+		 $('#userf').html('');
+		 $('#userl').css('display','none');
+	 }
+	 
+	 if(password==''){
+		 $('#passf').html('请输入密码');
+		 $('#passl').css('display','block');
+		 return false;
+	 }else{
+		 if(password.length<6){
+			 $('#passf').html('密码不能小于6位');
+			 $('#passl').css('display','block');
+			 return false;
+		 }
+		 $('#passf').html('');
+		 $('#passl').css('display','none');
+	 }
+	
+	 var json={"username":username,"password":password,"agencyId":agencyId};
+ 	if(id!=''){
+ 		json={"username":username,"password":password,"agencyId":agencyId,'id':id};
+	 }
+	 $.ajax({
+			type: "POST",
+	        url: "/burgerking/sys/saveUser",
+	        data: json,
+	        dataType: "json",
+	        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+		    cache : false,
+		    async : false,
+	        success: function(data){
+	        	if(data.res==true){
+	        		showmessage('修改成功');
+	        		$('#top_alert').fadeOut(3000);
+	        	}else{
+	        		showmessage('修改失败');
+	        		$('#top_alert').fadeOut(3000);
+	        	}
+	        }
+	    });
+ });
+ 
+$('#back').click(function(){
+	$("#maincontent").load('../resources/html/sys/userManager.html',function(){
+		ready();
+	});
+});
+$('#reset').click(function(){
+	$('#password').val('');
+});
+ </script>

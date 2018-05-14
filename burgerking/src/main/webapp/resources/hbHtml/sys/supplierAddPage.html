@@ -1,0 +1,371 @@
+<style type="text/css">
+	.colmd4{
+		text-align: center;
+		padding-top:20px;
+		color:#ffffff;
+	}
+	.colmd2{
+		text-align: right;
+		height:35px;
+		line-height: 35px;
+	}
+	 #top_alert {
+		width: 180px;
+		padding: 10px 0;
+		background: #4A4242;
+		border: 1px solid #4A4242;
+		color: #FFFFFF;
+		position: absolute;
+		text-align: center;
+		left: 25%;
+		top: 0;
+	}
+	.c{
+		height: 35px;
+	}
+</style>
+<script type="text/javascript" src="../resources/treetable3/jquery.treetable.js"></script> 
+     <link rel="stylesheet" href="../resources/treetable3/css/jquery.treetable.theme.default.css">
+<div id="main" style="width: 100%;padding:0px;">
+	<div  class="col-md-12" style="background-color: #F2F2F2;height:40px;font-size: 14px;line-height: 40px;margin-top:10px;">
+		<div  class="col-md-2"></div>
+		<div  class="col-md-10">当前位置：信息管理>供应商信息</div>
+	</div>
+	<div class="col-md-12" >
+		<div class="col-md-2"></div>
+		<div class="col-md-5">
+			<div class="col-md-12" style="height: 30px;line-height: 30px;">供应商信息：</div>
+			<div class="col-md-12">
+				<div class="col-md-4 colmd2">供应商名称：</div>		
+				<div class="col-md-8"><input type="text"  id="supplierName" placeholder="请选择供应商名称" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid;width: 100%" onfocus="removeCss(this.id)" /></div>	
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-4 colmd2">英文名：</div>		
+				<div class="col-md-8"><input type="text"   id="ename" placeholder="请输入英文名"  style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid;width: 100%" onfocus="removeCss(this.id)"/></div>	
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-4 colmd2">公司名称：</div>		
+				<div class="col-md-8"><input type="text"   id="comName" placeholder="请输入公司名称"  style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid;width: 100%"onfocus="removeCss(this.id)"/></div>	
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-4 colmd2">联系人：</div>		
+				<div class="col-md-8"><input type="text"   id="linkMan" placeholder="请输入联系人"  style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid;width: 100%" onfocus="removeCss(this.id)"/></div>	
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-4 colmd2">联系方式：</div>		
+				<div class="col-md-8"><input type="text"  id="linkWay" placeholder="请输入联系方式"   onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');"  style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid;width: 100%" onfocus="removeCss(this.id)"/></div>	
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-4 colmd2">邮箱：</div>		
+				<div class="col-md-8"><input type="text"  id="email"  onfocus="emailMode()"   placeholder="请输入邮箱" readonly="readonly" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid;width: 100%" onfocus="removeCss(this.id)" /></div>	
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-4 colmd2">地址：</div>		
+				<div class="col-md-8"><input type="text"  id="address" placeholder="请输入地址"  style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid;width: 100%" onfocus="removeCss(this.id)"/></div>	
+			</div>
+<!-- 			<div class="col-md-12"> -->
+<!-- 				<div class="col-md-4 colmd2">关联公司：</div>		 -->
+<!-- 				<div class="col-md-8">	 -->
+<!-- 					<div style="height:120px; overflow:auto;border: 1px solid;"  id="companys" > -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 			<div class="col-md-12" style="margin-top:20px;"> -->
+<!-- 					<div class="col-md-4 colmd2">关联门店：</div>		 -->
+<!-- 					<div class="col-md-8"> -->
+<!-- 						<div style="height:120px; overflow:auto;border: 1px solid;"  id="storeDS"> -->
+<!-- 						</div>	 -->
+<!-- 					</div>	 -->
+<!-- 			</div>	 -->
+			<div class="col-md-12" style="padding-left:40%;padding-top:30px;">
+				<button onclick="savaSupplier()" style="border: 0px;border-radius: 5px;background-color: #E0592B;height:30px;width: 80px;color:#ffffff;">确定</button>
+				<button onclick="back()" style="border: 0px;border-radius: 5px;background-color: #E0592B;height:30px;width: 80px;color:#ffffff;" id="update" >返回</button>
+			</div>
+		</div>
+		<div class="col-md-4" style="padding-top:20px;overflow-y:scroll;  overflow-x:hidden" id="tree">
+			<table id="example1" style="border: 0px;font-size:14px;">
+					<tr >
+						<td style="text-align: left;">
+							分公司及门店：
+							<button  onclick="jQuery('#example1').treetable('expandAll'); return false;">展开</button>
+							<button  onclick="jQuery('#example1').treetable('collapseAll'); return false;">关闭</button></td>
+					</tr>
+			 </table>
+		</div>
+	</div>		
+</div>
+<div class="modal fade" id="emailMode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">添加邮箱</h4>
+      </div>
+      <div class="modal-body">
+		  <div id="mailInput"></div>
+		  <div>
+		  	<div  class="col-md-8" ><input type="text" id="qemail" onfocus="removeCss(this.id)"  /></div>
+		  	<div class="col-md-4" ><button onclick="addEmail()"  style="border: 0px;border-radius: 5px;background-color: #E0592B;height:25px;width: 60px;color:#ffffff;">添加</button></div>
+		  </div>
+	      <div style="height: 80px;padding-top:50px;">
+	     	 <div  class="col-md-6" style="text-align: center;"><button type="button" class="btn btn btn-info btn-sm" id="delButton" value="" onclick="selectEmail()">确定</button></div>
+	         <div  class="col-md-6"style="text-align: center;"  ><button type="button" class="btn btn btn-info btn-sm" data-dismiss="modal">取消</button></div>
+	      </div>
+   	  </div>
+  </div>
+ </div>
+</div>
+<script type="text/javascript">
+function emailMode(){
+	$("#mailInput").html("");
+	var emails=$("#email").val();
+	if(emails!=""){
+		var email=emails.split("，");
+		for (i=0;i<email.length ;i++ )
+		{
+			var html="<div style='height: 30px;'><div  class='col-md-8' ><input type='text' name='emails' value='"+email[i]+"' readonly  /></div><div  class='col-md-4' ><button onclick='delEmail(this)'  style='border: 0px;border-radius: 5px;background-color: #E0592B;height:25px;width: 60px;color:#ffffff;'>删除</button></div></div>";
+			$("#mailInput").append(html);
+		} 
+	}
+    $('#emailMode').modal({backdrop: 'static', keyboard: false});
+}
+function addEmail(){
+	var qemail=$("#qemail").val();
+	if(qemail==''){
+		$("#qemail").css("background-color","red");
+		return false;
+	}else{
+		var myreg= /^([0-9A-Za-z\-_\.]+)@([0-9a-z]+\.[a-z]{2,3}(\.[a-z]{2})?)$/g; ;
+		if(!myreg.test(qemail)) 
+		{ 
+		    alert('请输入合法的email！'); 
+		    $("#qemail").css("background-color","red");
+		    return false; 
+		} 
+	}
+	$("#mailInput").append("<div style='height: 30px;'><div  class='col-md-8' ><input type='text' name='emails' value='"+qemail+"' readonly  /></div><div  class='col-md-4' ><button onclick='delEmail(this)'  style='border: 0px;border-radius: 5px;background-color: #E0592B;height:25px;width: 60px;color:#ffffff;'>删除</button></div></div>");
+	$("#qemail").val("");
+}
+function delEmail(e){
+	$(e).parent().parent().remove();
+}
+function selectEmail(){
+	var emails  = document.getElementsByName("emails");
+	var email="";
+	for (var int = 0; int < emails.length; int++) {
+		email+=emails[int].value+"，";
+	}
+	$("#email").val(email.substring(0,email.length-1));
+	$('#emailMode').modal('hide');
+}
+// var getElementMargin={
+// 		 left:function(ele){
+// 		  var actualLeft = ele.offsetLeft;
+// 		  var current = ele.offsetParent;
+// 		  while (current !== null){
+// 		   actualLeft += current.offsetLeft;
+// 		   current = current.offsetParent;
+// 		  }
+// 		//一个准确获取网页客户区的宽高、滚动条宽高、滚动条Left和Top的代码
+// 		  if (document.compatMode == "BackCompat"){
+// 		   var elementScrollLeft=document.body.scrollLeft;
+// 		  } else {
+// 		   var elementScrollLeft=document.documentElement.scrollLeft;
+// 		  }
+// 		  return actualLeft-elementScrollLeft;
+// 		 },
+// 		 top:function(ele){
+// 		  var actualTop = ele.offsetTop;
+// 		  var current = ele.offsetParent;
+// 		  while (current !== null){
+// 		   actualTop += current.offsetTop;
+// 		   current = current.offsetParent;
+// 		  }
+// 		  if (document.compatMode == "BackCompat"){
+// 		   var elementScrollTop=document.body.scrollTop;
+// 		  } else {
+// 		   var elementScrollTop=document.documentElement.scrollTop;
+// 		  }
+// 		  return actualTop-elementScrollTop;
+// 		 },
+// 		 bot:function(ele){
+// 		  var actualBottom = document.body.offsetHeight - this.top(ele);//浏览器当前的高度减去当前元素的窗口位置，注意是相对的位置，不包括滚动条里的高度
+// 		  return actualBottom;
+// 		 }
+// 		};
+function ready(){
+	// 	findCompany();
+	$("#tree").height($(window).height()-190);
+	treedate1();  
+	treetablesh();
+}
+
+
+function removeCss(id){
+	$("#"+id+"").css("background-color","#ffffff");
+}
+function savaSupplier(){
+	var supplierName=$("#supplierName").val();
+	var ename=$("#ename").val();
+	var comName=$("#comName").val();
+	var linkMan=$("#linkMan").val();
+	var linkWay=$("#linkWay").val();
+	var address=$("#address").val();
+	var email=$("#email").val();
+	
+	var companyId  = document.getElementsByName("companyId");
+	var companyIds=[];
+	for (var int = 0; int < companyId.length; int++) {
+		if(companyId[int].checked){
+			companyIds.push(companyId[int].value);
+		}
+	}
+	var storeId  = document.getElementsByName("storeId");
+	var storeIds=[];
+	for (var int = 0; int < storeId.length; int++) {
+		if(storeId[int].checked){
+			storeIds.push(storeId[int].value);
+		}
+	}
+	
+	if(supplierName==null || supplierName==""){
+		$("#supplierName").css("background-color","red");
+		return;
+	}
+	if(comName==null || comName==""){
+		$("#comName").css("background-color","red");
+		return;
+	}
+	if(linkWay!=null || linkWay!=""){
+		if(linkWay!="无"){
+			var myreg = /^1(3|4|5|7|8)\d{9}$/; 
+			var mytelp= /^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/;
+			if(!myreg.test(linkWay) && !mytelp.test(linkWay)) 
+			{ 
+			    alert('请输入有效的号码！'); 
+			    $("#linkWay").css("background-color","red");
+			    return false; 
+			} 
+		}
+		
+	}
+	if(companyIds.length==0){
+		alert("请选择分公司！")
+		return;
+	}
+	
+	
+	 $.ajax({
+			type: "POST",
+	        url: "/burgerking/sys/savaSupplier",
+	        data: {
+	        	"supplierName":supplierName,
+	        	"ename":ename,
+	        	"comName":comName,
+	        	"linkMan":linkMan,
+	        	"linkWay":linkWay,
+	        	"address":address,
+	        	"companyId": companyIds,
+	        	"storeId": storeIds,
+	        	"email":email
+	        },
+	        traditional: true,
+	        dataType: "json",  
+	        cache: false,
+	        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+	        success: function(data){
+	        	if(data.code==400){
+	        		location.href = "/burgerking/sys/hbLogin";
+	        	}else{
+	 				if(data.res){
+	 					$("#maincontent").load('../resources/hbHtml/sys/supplierPage.html',function(){
+	 						ready();
+	 					});
+	 				}else{
+ 		        		alert('保存失败');
+ 		        	}
+	        	}
+	        }
+	 });
+}
+function  back(){
+	$("#maincontent").load('../resources/hbHtml/sys/supplierPage.html',function(){
+			ready();
+		});
+}
+</script>
+<script type="text/javascript">
+function treetablesh(){ 
+	$("#example1").treetable({ expandable: true });
+	// Highlight selected row
+// 	$("#example1 tbody").on("mousedown", "tr", function() {
+// 	  $(".selected").not(this).removeClass("selected");
+// 	  $(this).toggleClass("selected");
+// 	});
+	jQuery('#example1').treetable('expandAll');
+	
+}
+
+function checkedBoxSelect(e){
+	var parentId= $("#"+e.value+"").attr("data-tt-parent-id");
+	if(e.checked){
+		if(parentId!=0){
+			$("#"+parentId+"").find("input").prop("checked", true);  
+		}else{
+			$(".c").each(function(){
+				if($(this).attr("data-tt-parent-id")==e.value){
+					 $(this).find("input").prop("checked",true) 
+					 a=parseInt(a)+1;
+				}
+			})
+		}
+	}else{
+		if(parentId!=0){
+			var a =0;
+			$(".c").each(function(){
+				if($(this).attr("data-tt-parent-id")==parentId){
+					if($(this).find("input").prop("checked")){
+						a=parseInt(a)+1;
+					};
+				}
+			})
+			if(a!=0){
+				return;
+			}
+			$("#"+parentId+"").find("input").prop("checked", false); 
+		}else{
+			$(".c").each(function(){
+				if($(this).attr("data-tt-parent-id")==e.value){
+					 $(this).find("input").prop("checked",false); 
+				}
+			})
+		}
+	}
+	
+	
+}
+
+function treedate1() {
+		var path = "/burgerking/sys/findCompanysAndStores";
+		$.ajax({
+				type : "POST",
+				url : path,
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded; charset=utf-8",
+				cache : false,
+				async : false,
+				success : function(data) { 
+					var ahtml="";
+					for (var int = 0; int < data.maps.length; int++) {
+						if(data.maps[int].pid==0){
+							ahtml+="<tr class='c' id='"+data.maps[int].id+"' data-tt-id='"+data.maps[int].id+"' data-tt-parent-id='"+data.maps[int].pid+"' ><td><input type='checkbox'  name='companyId' value='"+data.maps[int].id+"' onclick='checkedBoxSelect(this)' />&nbsp;&nbsp;"+data.maps[int].name+"</td></tr>"
+						}else{
+							ahtml+="<tr class='c'  id='"+data.maps[int].id+"' data-tt-id='"+data.maps[int].id+"' data-tt-parent-id='"+data.maps[int].pid+"' ><td><input type='checkbox'  name='storeId' value='"+data.maps[int].id+"' onclick='checkedBoxSelect(this)' />&nbsp;&nbsp;"+data.maps[int].name+"</td></tr>"
+						}
+					}
+					$("#example1").append(ahtml); 
+				}
+			});
+}
+  
+</script>

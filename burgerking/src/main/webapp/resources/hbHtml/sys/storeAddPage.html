@@ -1,0 +1,305 @@
+<style type="text/css">
+	.colmd4{
+		text-align: center;
+		padding-top:20px;
+		color:#ffffff;
+	}
+	.colmd2{
+		text-align: right;
+		height:35px;
+		line-height: 35px;
+	}
+	 #top_alert {
+		width: 180px;
+		padding: 10px 0;
+		background: #4A4242;
+		border: 1px solid #4A4242;
+		color: #FFFFFF;
+		position: absolute;
+		text-align: center;
+		left: 25%;
+		top: 0;
+	}
+</style>
+
+
+<div id="main" style="width: 100%;padding:0px;">
+	<div  class="col-md-12" style="background-color: #F2F2F2;height:40px;font-size: 14px;line-height: 40px;margin-top:10px;">
+		<div  class="col-md-2"></div>
+		<div  class="col-md-10">当前位置：门店管理</div>
+	</div>
+	<div class="col-md-12" >
+		<div class="col-md-2"></div>
+		<div class="col-md-5">
+			<div class="col-md-12" style="height: 30px;line-height: 30px;">门店信息：</div>
+			<div class="col-md-12">
+				<div class="col-md-4 colmd2">门店编号：</div>		
+				<div class="col-md-8"><input type="text" id="storeId"  onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');"  onblur="validateStoreId()" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid;width: 100%"  /></div>	
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-4 colmd2">门店名称：</div>		
+				<div class="col-md-8"><input type="text" id="name" placeholder="请输入门店名称" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid;width: 100%" onfocus="removeCss(this.id)"/></div>	
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-4 colmd2">地址：</div>		
+				<div class="col-md-8"><input type="text" id="address"  placeholder="请输入地址"  style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid;width: 100%"onfocus="removeCss(this.id)" /></div>	
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-4 colmd2">开业时间：</div>		
+				<div class="col-md-8">
+					<input  class="Wdate" type="text" id="openTime"  placeholder="请选择开业时间"  onFocus="WdatePicker()"  style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid;width: 100%" onfocus="removeCss(this.id)" />
+				</div>	
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-4 colmd2">状态：</div>		
+				<div class="col-md-8">
+					<select id="status" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid;width: 100%" onfocus="removeCss(this.id)" >
+						<option value="open">营业中</option>
+						<option value="close">关闭</option>
+					</select>
+				</div>	
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-4 colmd2">闭店时间：</div>		
+				<div class="col-md-8">
+					<input  class="Wdate" type="text" id="closeTime" onFocus="WdatePicker()"  style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid;width: 100%" />
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-4 colmd2">联系人：</div>		
+				<div class="col-md-8"><input type="text" id="linkman"  placeholder="请输入联系人"  style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid;width: 100%"  onfocus="removeCss(this.id)"/></div>	
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-4 colmd2">电话：</div>		
+				<div class="col-md-8"><input type="text" id="phone"  placeholder="请输入手机号或者固定号码"   onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');"  style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid;width: 100%"  onfocus="removeCss(this.id)"/></div>	
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-4 colmd2">邮箱：</div>		
+				<div class="col-md-8"><input id="email" type="text"  placeholder="请输入邮箱"  style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid;width: 100%"onfocus="removeCss(this.id)" /></div>	
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-4 colmd2">关联分公司：</div>		
+				<div class="col-md-8">
+					<select id="company" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid;width: 100%" onfocus="removeCss(this.id)" >
+						<option value="">---请选择分公司----</option>
+					</select>
+				</div>	
+			</div>
+<!-- 			<div class="col-md-12"> -->
+<!-- 				<div class="col-md-4 colmd2">默认供应商：</div>		 -->
+<!-- 				<div class="col-md-8"> -->
+<!-- 					<select id="supplier" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid;width: 100%" onfocus="removeCss(this.id)" > -->
+<!-- 						<option value="">---请选择供应商----</option> -->
+<!-- 					</select> -->
+<!-- 				</div>	 -->
+<!-- 			</div> -->
+			<div class="col-md-12" style="padding-left:40%;padding-top:30px;">
+				<div class="col-md-6"><button onclick="savaStore()" style="border: 0px;border-radius: 5px;background-color: #E0592B;height:30px;width: 80px;color:#ffffff;">确定</button></div>
+				<div class="col-md-6"><button onclick="back()"  style="border: 0px;border-radius: 5px;background-color: #E0592B;height:30px;width: 80px;color:#ffffff;" id="update" >返回</button></div>	
+			</div>
+        </div>
+        <div class="col-md-2"></div>
+	</div>	
+</div>
+<script type="text/javascript" src="../resources/dist/My97DatePicker/WdatePicker.js"></script>
+
+<script type="text/javascript">
+function ready(){
+	$.ajax({
+		type: "GET",
+        url: "/burgerking/sys/findAllCompany",
+        dataType: "json",
+        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+	    cache : false,
+	    async : false,
+        success: function(data){
+        	var html="<option value=''>---请选择分公司----</option>";
+       		for (var int = 0; int < data.data.length; int++) {
+				html+="<option value='"+data.data[int].id+"'>"+data.data[int].csName+"</option>";
+			}
+			$("#company").html(html);
+        }
+ 	});
+// 	$.ajax({
+// 		type: "GET",
+//         url: "/burgerking/sys/findMaxCSId",
+//         dataType: "json",
+//         contentType:"application/x-www-form-urlencoded; charset=utf-8",
+// 	    cache : false,
+// 	    async : false,
+//         success: function(data){
+//         	$("#id").val(parseInt(data.maxCSId)+1);
+//         }
+//  	});
+// 	$.ajax({
+// 		type: "POST",
+//         url: "/burgerking/sys/findAllSupplier",
+//         dataType: "json",
+//         contentType:"application/x-www-form-urlencoded; charset=utf-8",
+// 	    cache : false,
+// 	    async : false,
+//         success: function(data){
+//         	var html="<option value=''>---请选择供应商----</option>";
+//        		for (var int = 0; int < data.supplier.length; int++) {
+// 				html+="<option value='"+data.supplier[int].id+"'>"+data.supplier[int].supplierName+"</option>";
+// 			}
+// 			$("#supplier").html(html);
+//         }
+//  	});
+}
+
+function removeCss(id){
+	$("#"+id+"").css("background-color","#ffffff");
+}
+function savaStore(){
+	var storeId=$("#storeId").val();
+	var name=$("#name").val();
+	var company=$("#company").val();
+	var phone=$("#phone").val();
+	var address=$("#address").val();
+	var openTime=$("#openTime").val();
+	var closeTime=$("#closeTime").val();
+	var status=$("#status").val();
+	var linkman=$("#linkman").val();
+	var email=$("#email").val();
+// 	var supplier=$("#supplier").val();
+	
+	if(!validateStoreId()){
+		$("#storeId").css("background-color","red");
+		return false;
+	}
+	
+	if(name==null || name==""){
+		$("#name").css("background-color","red");
+		return;
+	}
+	
+	if(status==null || status==""){
+		$("#status").css("background-color","red");
+		return;
+	}
+	if(openTime!=null && openTime!="" && closeTime!=null && closeTime!=""){
+		if(openTime>closeTime){
+			alert("开业时间不能小于闭店时间");
+			return;
+		}
+	}
+	if(phone!=null && phone!=""){
+		if(phone!="无"){
+			var myreg = /^1(3|4|5|7|8)\d{9}$/; 
+			var mytelp= /^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/;
+			if(!myreg.test(phone) && !mytelp.test(phone)) 
+			{ 
+			    alert('请输入有效的号码！'); 
+			    $("#phone").css("background-color","red");
+			    return false; 
+			} 
+		}
+		
+	}
+	if(email==null || email==""){
+		$("#email").css("background-color","red");
+		return;
+	}else{
+		var myreg= /^([0-9A-Za-z\-_\.]+)@([0-9a-z]+\.[a-z]{2,3}(\.[a-z]{2})?)$/g; ;
+		if(!myreg.test(email)) 
+		{ 
+		    alert('请输入合法的email！'); 
+		    $("#email").css("background-color","red");
+		    return false; 
+		} 
+	}
+	if(company==null || company==""){
+		$("#company").css("background-color","red");
+		return;
+	}
+// 	if(supplier==null || supplier==""){
+// 		$("#supplier").css("background-color","red");
+// 		return;
+// 	}
+	
+	var aa={
+		"storeId":storeId,
+		"csName":name,
+    	"companyId":company,
+    	"phone":phone,
+    	"address":address,
+    	"openTime":openTime,
+    	"closeTime":closeTime,
+    	"status":status,
+    	"linkMan":linkman,
+    	"email":email
+    }
+	 $.ajax({
+			type: "POST",
+	        url: "/burgerking/sys/savaStore",
+	        data: aa,
+	        dataType: "json",
+	        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+		    cache : false,
+		    async : false,
+	        success: function(data){
+	        	if(data.code==400){
+	        		location.href = "/burgerking/sys/hbLogin";
+	        	}else{
+	 				if(data.res){
+	 					$("#maincontent").load('../resources/hbHtml/sys/storePage.html',function(){
+	 						ready();
+	 					});
+	 				}
+	        	}
+	        }
+	 });
+}
+function validateStoreId() {
+	var storeId = $.trim($('#storeId').val());
+	var flag = false;
+	$
+			.ajax({
+				type : "GET",
+				url : "/burgerking/sys/validateStoreId",
+				data : {
+					"storeId" : storeId
+				},
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded; charset=utf-8",
+				cache : false,
+				async : false,
+				success : function(data) {
+					if (data.res == true) {
+						 alert("门店编号不能重复");
+						 $("#storeId").css("background-color","red");
+					} else {
+						$("#storeId").css("background-color","#ffffff");
+						flag = true;
+					}
+				},
+				error : function(msg) {
+					 $("#storeId").css("background-color","red");
+				}
+			});
+	return flag;
+}
+
+
+function findStore(id){
+	 $.ajax({
+			type: "POST",
+	        url: "/burgerking/sys/findStore",
+	        data: {"id":id},
+	        dataType: "json",
+	        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+		    cache : false,
+		    async : false,
+	        success: function(data){
+ 				
+	        }
+	 });
+}
+function  back(){
+	$("#maincontent").load('../resources/hbHtml/sys/storePage.html',function(){
+			ready();
+		});
+}
+</script>
+

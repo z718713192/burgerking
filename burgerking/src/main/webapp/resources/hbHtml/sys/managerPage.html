@@ -1,0 +1,255 @@
+<style type="text/css">
+	.colmd2{
+		text-align: right;
+		height:35px;
+		line-height: 35px;
+	}
+	.colmd8{
+		height:35px;
+		line-height: 35px;
+	}
+</style>
+
+
+<div id="main" style="width: 100%;padding:0px;">
+	<div  class="col-md-12" style="background-color: #F2F2F2;height:40px;font-size: 14px;line-height: 40px;margin-top:10px;">
+		<div  class="col-md-2"></div>
+		<div  class="col-md-10">当前位置：管理员信息</div>
+	</div>
+	<div class="col-md-12" >
+		<div class="col-md-2"></div>
+		<div class="col-md-8">
+			<div class="col-md-12">个人信息：</div>
+			<div class="col-md-12">
+				<div class="col-md-2 colmd2">工号：</div>
+				<input type="hidden" id="id" />		
+				<div class="col-md-8 colmd8"><input type="text" id="managerNo"  readonly="readonly"  placeholder="请输入工号" readonly="readonly" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid" /></div>	
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-2 colmd2">姓名：</div>		
+				<div class="col-md-8 colmd8"><input type="text" id="name"  readonly="readonly"  placeholder="请输入姓名"  style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid" /></div>	
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-2 colmd2">英文名：</div>		
+				<div class="col-md-8 colmd8"><input type="text"  readonly="readonly"  placeholder="请输入英文名"  id="ename" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid" /></div>	
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-2 colmd2">邮箱：</div>		
+				<div class="col-md-8 colmd8"><input type="text"  readonly="readonly"  placeholder="请输入邮箱"  id="email" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid" /></div>	
+			</div>
+<!-- 			<div class="col-md-12"> -->
+<!-- 				<div class="col-md-2 colmd2">所属公司：</div>		 -->
+<!-- 				<div class="col-md-8 colmd8"><input type="text" id="companyName" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid" /></div>	 -->
+<!-- 			</div> -->
+			<div class="col-md-12">
+				<div class="col-md-2 colmd2" style="">重置密码：</div>		
+				<div class="col-md-8 colmd8"><input type="text" id="rePwd" disabled="disabled" readonly="readonly" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid" onfocus="updatePwdMode()" /></div>	
+			</div>
+			<div class="col-md-12" style="padding-left:25%;padding-top:30px;">
+				<button onclick="savaMessager()" id="savaM" style="border: 0px;border-radius: 5px;background-color: #E0592B;height:30px;width: 80px;color:#ffffff;display: none;">确定</button>
+				<button onclick="updateM()" id="udpateM" style="border: 0px;border-radius: 5px;background-color: #E0592B;height:30px;width: 80px;color:#ffffff;">编辑</button>
+			</div>			
+        </div>
+        <div class="col-md-2"></div>
+	</div>	
+</div>
+
+<div class="modal fade" id="updatePwdMode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content" style="width: 400px;top:200px;">
+      <div>
+      	  <div class="col-md-12" style="margin-top:20px;">
+				<div class="col-md-4 colmd2">原密码：</div>		
+				<div class="col-md-7"><input type="password" id="password" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid" /></div>	
+		  </div>
+		  <div class="col-md-12">
+				<div class="col-md-4 colmd2">新密码：</div>		
+				<div class="col-md-7"><input type="password" id="newPassword" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid" /></div>	
+		  </div>
+		  <div class="col-md-12">
+				<div class="col-md-4 colmd2">确认密码：</div>		
+				<div class="col-md-7"><input type="password" id="rePassword" style="height: 25px;line-height: 25px;border: 0px;border-bottom: 1px solid" /></div>	
+		  </div>
+	      <div class="modal-footer" style="text-align: center">
+	     	 <button type="button" class="btn btn btn-info btn-sm" style="background-color: #E0592B;border: 0px;" id="delButton" value="" onclick="update()">确定</button>
+	         <button type="button" class="btn btn btn-info btn-sm" style="background-color: #E0592B;border: 0px;" data-dismiss="modal">取消</button>
+	      </div>
+    </div>
+  </div>
+ </div>
+</div>
+
+<div class="modal fade" id="savePwdMode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content" style="width: 400px;top:200px;">
+       <div class="modal-header" style="background: #ED7800;text-align: center;color:#ffffff;">
+        	<h4 class="modal-title" id="myModalLabel">保存</h4>
+      </div>
+      <div class="modal-body">
+  	   <div class="modal-header" style="text-align: center;">
+      		恭喜您！保存信息成功
+      </div>
+      <div class="modal-footer" style="text-align: center;">
+        <button type="button" class="btn btn btn-info btn-sm" data-dismiss="modal">確定</button>
+      </div>
+       </div>
+        </div>
+ </div>
+</div>
+<script type="text/javascript">
+function ready(){
+	$.ajax({
+		type: "GET",
+        url: "/burgerking/sys/findManager",
+        dataType: "json",
+        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+	    cache : false,
+	    async : false,
+        success: function(data){
+        	if(data.code==400){
+        		location.href = "/burgerking/sys/hbLogin";
+        	}else{
+        		$("#id").val(data.manager.id);
+        		$("#managerNo").val(data.manager.username);
+        		$("#email").val(data.manager.email);
+        		$("#name").val(data.manager.name);
+        		$("#ename").val(data.manager.ename);
+//         		$("#companyName").val(data.manager.companyName);
+        	}
+        }
+ });
+}
+function updateM(){
+	$("#name").removeAttr("readonly");
+	$("#email").removeAttr("readonly");
+	$("#ename").removeAttr("readonly");
+	$("#rePwd").removeAttr("disabled");
+	$("#savaM").show(0);
+	$("#udpateM").hide(0);
+	
+}
+function savaM(){
+	$("#name").attr("readonly","readonly");
+	$("#email").attr("readonly","readonly");
+	$("#ename").attr("readonly","readonly");
+	$("#rePwd").attr("disabled","disabled");
+	$("#savaM").hide(0);
+	$("#udpateM").show(0);
+	
+}
+function savaMessager(){
+	var email=$("#email").val();
+	var name=$("#name").val();
+	var ename= $("#ename").val();
+// 	var companyName= $("#companyName").val();
+	if(name==""){
+		$("#name").css("background-color","red");
+		return;
+	}
+		
+	if(ename==""){
+		$("#ename").css("background-color","red");
+		return;
+	}
+	if(email==""){
+		$("#email").css("background-color","red");
+		return;
+	}else{
+		var myreg= /^([0-9A-Za-z\-_\.]+)@([0-9a-z]+\.[a-z]{2,3}(\.[a-z]{2})?)$/g; ;
+		if(!myreg.test(email)) 
+		{ 
+		    alert('请输入合法的email！'); 
+		    $("#email").css("background-color","red");
+		    return false; 
+		} 
+	}
+// 	if(companyName==""){
+// 		$("#companyName").css("background-color","red");
+// 		return;
+// 	}
+
+	$.ajax({
+		type: "POST",
+        url: "/burgerking/sys/updateManager",
+        data:{
+        	'id':$("#id").val(),
+        	'managerNo':$("#managerNo").val(),
+        	'email':email,
+        	'name':name,
+        	'ename':ename 
+        },
+        dataType: "json",
+        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+	    cache : false,
+	    async : false,
+        success: function(data){
+        	if(data.code==400){
+        		location.href = "/burgerking/sys/hbLogin";
+        	}else{
+	        	if(data.res){
+	        		$('#savePwdMode').modal({backdrop: 'static', keyboard: false});
+	        		savaM();
+	        	}
+        	}
+        }
+ });
+}
+function  update(){
+	var password=$("#password").val();
+	var newPassword=$("#newPassword").val();
+	var rePassword=$("#rePassword").val();
+	if(password==""){
+		$("#password").css("background-color","red");
+		return;
+	}
+	if(newPassword==""){
+		$("#newPassword").css("background-color","red");
+		return;
+	}
+	if(rePassword==""){
+		$("#rePassword").css("background-color","red");
+		return;
+	}
+	if(newPassword!=rePassword){
+		$("#rePassword").css("background-color","red");
+		$("#newPassword").css("background-color","red");
+		alert("两次输入的密码不正确");
+		return;
+	}
+	
+	$.ajax({
+		type: "POST",
+        url: "/burgerking/sys/updateManaPassaword",
+        data:{
+        	'id':$("#id").val(),
+        	'managerNo':$("#managerNo").val(),
+        	'password':newPassword, 
+        },
+        dataType: "json",
+        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+	    cache : false,
+	    async : false,
+        success: function(data){
+        	if(data.code==400){
+        		location.href = "/burgerking/sys/hbLogin";
+        	}else{
+	        	if(data.res){
+	        		$('#updatePwdMode').modal('hide');
+	        		$("#password").val("");
+	        		$("#newPassword").val("");
+	        		$("#rePassword").val("");
+	        	}else{
+	        		$("#rePassword").css("background-color","red");
+	        		$("#newPassword").css("background-color","red");
+	        	}
+        	}
+        }
+	 });
+}
+
+function updatePwdMode(){
+      $('#updatePwdMode').modal({backdrop: 'static', keyboard: false});
+}
+
+</script>
+

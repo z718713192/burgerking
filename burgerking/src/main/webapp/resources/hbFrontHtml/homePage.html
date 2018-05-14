@@ -1,0 +1,237 @@
+<style type="text/css">
+.colmd4 {
+	text-align: center;
+	padding-top: 20px;
+	color: #ffffff;
+}
+/* .chart{height:250px;width: 100%;margin:0px;} */
+
+/* label.legend{display:inline-block;font-weight: normal;margin-right: 5px;font-size: 12px;cursor: pointer;width:150px;} */
+/* label.legend.disabled{color: #d3d3d3 !important;} */
+/* label.legend.disabled .label{background-color: #d3d3d3 !important;} */
+/* label.legend .label{width: 12px;height: 8px;margin-right: 5px;vertical-align: middle;margin-bottom: 2px;} */
+/* label.legend .label:empty{display: inline-block;} */
+</style>
+
+<script type="text/javascript" src="../resources/dist/My97DatePicker/WdatePicker.js"></script>
+<div id="main" style="width: 100%; padding: 0px;">
+	<div class="col-md-12"
+		style="background-color: #F2F2F2; height: 40px; font-size: 14px; line-height: 40px; margin-top: 10px;">
+		<div class="col-md-2"></div>
+		<div class="col-md-10">当前位置：首页</div>
+	</div>
+	<div class="col-md-12">
+		<div class="col-md-12" style="margin-top:16px; ">
+			<div class="col-md-4" style="text-align: right;">
+				<input  class="Wdate" type="text" id="monthNum"  placeholder="请选择开业时间"   onFocus="fivedate_focus(this)"  />
+			</div>
+			<div class="col-md-2"><span style="display: inline-block;background-color:#DFA46D;width:50px;height: 30px;float: left;text-align: center; "></span><span style="height: 30px; line-height: 30px;display: inline-block;float: left;padding-left:10px;">已回复文件数</span></div>
+			<div class="col-md-2"><span  style="display: inline-block;background-color:#AB192D;width:50px;height: 30px;float: left;text-align: center; "></span><span style="height: 30px; line-height: 30px;display: inline-block;float: left;padding-left:10px;">已发送文件数</span></div>
+			<div class="col-md-2"><span  style="display: inline-block;background-color:#ED7800;width:50px;height: 30px;float: left;text-align: center; "></span><span style="height: 30px; line-height: 30px;display: inline-block;float: left;padding-left:10px;">已转换文件数</span></div>
+			<div class="col-md-2"><span  style="display: inline-block;background-color:#8B542F;width:50px;height: 30px;float: left;text-align: center; "></span><span style="height: 30px; line-height: 30px;display: inline-block;float: left;padding-left:10px;">导入文件数</span></div>
+		</div>
+		<div class="col-md-2"></div>
+		<div class="col-md-8" id="echartsMain">
+		</div>
+		<div class="col-md-2"></div>
+	</div>
+	<div>
+		<div id="divCharts"  class="col-md-6" style="width:80%;margin:50px auto;"></div>
+		<div id="divCharts1" class="col-md-6" style="width:80%;margin:50px auto;"></div>
+	</div>
+</div>
+<!-- <script type="text/javascript" -->
+<!-- 	src="/burgerking/resources/echarts/echarts-plain.js"></script> -->
+	<script type="text/javascript"
+	src="/burgerking/resources/echarts/echarts.min.js"></script>
+<script type="text/javascript">
+
+/**
+ * 
+ * 获取当前时间
+ */
+ function fivedate_focus(element){
+	   var onpicking =function(){
+		   if($("#monthNum").val()==''){
+				  $("#monthNum").val(now)
+			  }
+	   }
+	   WdatePicker({dateFmt:'yyyyMM',el:element,onpicking:onpicking});
+	   ready();
+}
+function ptime(s) {
+    return s < 10 ? '0' + s: s;
+}
+
+var myDate = new Date();
+//获取当前年
+var year=myDate.getFullYear();
+//获取当前月
+var month=myDate.getMonth()+1; 
+
+var now=year+''+ptime(month);
+
+$("#monthNum").val(now);
+function ready(){
+	$.ajax({
+		type: "GET",
+        url: "/burgerking/client/findCompanyMessgeByMonth",
+        data: {"month":$("#monthNum").val()},
+        dataType: "json",
+        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+	    cache : false,
+	    async : false,
+        success: function(data){
+        	var echartsMain="";
+			for (var int = 0; int < data.aaData.length; int++) {
+				echartsMain=echartsMain+"<div class='col-md-2' style='width:33%;height:250px;text-align:center;margin-bottom: 20px;'><div style='width:100%;height:250px;'   id='"+data.aaData[int].id+"'></div><div><button style='border:0px;width:80%;color:#ffffff;background-color:#E0592B;' value='"+data.aaData[int].id+"'  onclick='toImportanFile(this.value)'>文件导入</button></div></div>";
+			}	 
+			$("#echartsMain").html(echartsMain);
+			for (var int = 0; int < data.aaData.length; int++) {
+				echartsInfo(data.aaData[int].id,data.aaData[int].data,data.aaData[int].csName);
+			}
+        }
+ });
+
+	
+// 	var echartsMain="";
+// 	var echartsIds=['1','2','3','4','5'];
+// 	var echartsTitles=['aaa','bbb','ccc','ddd','eee'];
+	 
+// 	var a1=[22,33,44,55];
+// 	var b1=[33,44,55,66];
+// 	var c1=[44,55,66,77];
+// 	var d1=[55,66,77,88];
+// 	var e1=[66,77,88,99];
+// 	var data=new Array();	
+// 	data.push(a1);
+// 	data.push(b1);
+// 	data.push(c1);
+// 	data.push(d1);
+// 	data.push(e1);
+// 	for (var int = 0; int < echartsIds.length; int++) {
+// 		echartsMain=echartsMain+"<div class='col-md-2' style='width:33%;height:250px;'   id='"+echartsIds[int]+"'></div>";
+// 	}
+	
+// 	$("#echartsMain").html(echartsMain);
+// 	for (var int = 0; int < echartsIds.length; int++) {
+// 		echartsInfo(echartsIds[int],data[int],echartsTitles[int]);
+// 	}
+	
+}
+
+function echartsInfo(id,data,title){//,title,list1,list2
+	var echart = echarts.init(document.getElementById(id));
+	option = {
+			title : {
+			    	x:'center',y:'bottom',
+			        text: title,
+			        textStyle: {
+			            fontSize: 14
+			         }
+			},	
+		    color: ['#fffff'],
+		    tooltip : {
+		        trigger: 'axis',
+		        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+		            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+		        }
+		    },
+		    grid: {
+		        left: '0%',
+		        right: '8%',
+		        bottom: '5%',
+		        containLabel: true
+		    },
+		    xAxis : [
+		        {
+		            type : 'category',
+		            data : ['', ' ', ' ', ' '],
+		            axisTick: {
+		                alignWithLabel: true
+		            },
+		            show:false
+		        }
+		    ],
+		    yAxis : [
+		        {
+		            type : 'value',
+		            show:false
+		        }
+		    ],
+		    series : [
+		        {
+		            id:id,	
+		        	name:'文件数量',
+		            type:'bar',
+		            barWidth: '100%',
+		             itemStyle: {
+		                    normal: {
+		　　　　　　　　　　　　　　//好，这里就是重头戏了，定义一个list，然后根据所以取得不同的值，这样就实现了，
+		                        color: function(params) {
+		                            // build a color map as your need.
+		                            var colorList = [
+		                              '#DFA46D','#AB192D','#ED7800','#8B542F'
+		                            ];
+		                            return colorList[params.dataIndex]
+		                        },
+		　　　　　　　　　　　　　　//以下为是否显示，显示位置和显示格式的设置了
+		                        label: {
+		                            show: true,
+		                            position: 'top',
+//		                             formatter: '{c}'
+		                            formatter: '{b}\n{c}'
+		                        }
+		                    }
+		                },
+
+		            data:data
+// 		            rawdate:rawData
+		        }
+		    ]
+		};
+		echart.setOption(option);
+		echart.on("click", eConsole);
+} 
+function eConsole(param) {
+	 var month=$("#monthNum").val();
+    switch (param.dataIndex) {
+        case 0:    //柱子1
+        	$("#maincontent").load(
+						'../resources/hbFrontHtml/importantFliePage.html', function() {
+							ready(param.seriesId,"EcheckFile",month);
+						});
+            break;
+        case 1:  //柱子2
+        	$("#maincontent").load(
+						'../resources/hbFrontHtml/importantFliePage.html', function() {
+							ready(param.seriesId,"EsendEmail",month);
+						});
+            break;
+        case 2:  //柱子3
+            $("#maincontent").load(
+ 						'../resources/hbFrontHtml/importantFliePage.html', function() {
+  							ready(param.seriesId,"EchengePDF",month);
+  						});
+            break;
+        case 3:  //柱子3
+           $("#maincontent").load(
+ 						'../resources/hbFrontHtml/importantFliePage.html', function() {
+  							ready(param.seriesId,"Ee-seal",month);
+  						});
+            break;
+        default:
+            break;
+           
+    }
+}
+function toImportanFile(id){
+	var month=$("#monthNum").val();
+	 $("#maincontent").load(
+				'../resources/hbFrontHtml/importantFliePage.html', function() {
+					ready(id,"fileImport",month);
+				});
+}
+
+</script>
+

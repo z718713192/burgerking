@@ -1,0 +1,191 @@
+<style type="text/css">
+    #top_alert {
+		width: 180px;
+		padding: 10px 0;
+		background: #4A4242;
+		border: 1px solid #4A4242;
+		color: #FFFFFF;
+		position: absolute;
+		text-align: center;
+		left: 25%;
+		top: 0;
+	}
+</style>
+<div class="col-xs-12 col-md-12">
+<!-- Horizontal Form -->
+<div class="box" style="height: 100%;">
+  <div class="box-header with-border">
+    <h3 class="box-title">新增物流公司信息</h3>
+  </div><!-- /.box-header -->
+  <!-- form start -->
+  <form class="form-horizontal">
+    <div class="box-body">
+      <div class="form-group">
+        <label for="expressId" class="col-sm-3 control-label">物流公司ID：</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="expressId" id="expressId" placeholder="请输入物流公司ID..." onblur="validateexpressId()">
+        </div>
+        <label id="idl">
+        	<font style="color: red;" id="idf"></font>
+        </label>
+      </div>
+      <div class="form-group">
+        <label for="expressName" class="col-sm-3 control-label">物流公司名称：</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="expressName" id="expressName" placeholder="请输入物流公司名称..." onblur="validateexpressName()">
+        </div>
+        <label id="namel">
+        	<font style="color: red;" id="namef"></font>
+        </label>
+      </div>
+     
+    </div><!-- /.box-body -->
+    <div class="box-footer" align="center">
+      <button type="button" class="btn btn-info" id="save">保存</button>
+      <button type="reset" class="btn btn-info" id="reset">重置</button>
+      <button type="button" class="btn btn-info" id="back">返回</button>
+    </div><!-- /.box-footer -->
+  </form>
+  <div id="top_alert" class="top_alert" style="display: none;"><span></span></div>
+</div><!-- /.box -->
+</div>
+ <script type="text/javascript">
+ function ready(){
+	
+ }
+ 
+ function showmessage(text) {
+		
+		$('#top_alert').empty().append(
+				'<span>' + text + '</span>');
+		$('#top_alert').css('display', 'block');
+		
+		$('.top_alert').css({ 
+			position:'absolute', 
+			left: ($(window).width() - $('.top_alert').outerWidth())/3, 
+			top: ($(window).height() - $('.top_alert').outerHeight())/8 + $(".content").scrollTop() 
+			}); 
+		}
+ $('#save').click(function(){
+	 var expressId=$.trim($('#expressId').val());
+	 var expressName=$.trim($('#expressName').val());
+	 if(expressId==''){
+		 $('#idf').html('请输入物流公司ID');
+		 $('#idl').css('display','block');
+		 return false;
+	 }else{
+		 if(expressId.length>20){
+			 $('#idf').html('物流公司ID不能大于20个字符');
+			 $('#idl').css('display','block');
+			 return false;
+		 }
+		 $('#idf').html('');
+		 $('#idl').css('display','none');
+	 }
+	if(!validateexpressId()){
+		return false;
+	}
+	 if(expressName==''){
+		 $('#namef').html('请输入物流公司名称');
+		 $('#namel').css('display','block');
+		 return false;
+	 }else{
+		 if(expressName.length>80){
+			 $('#namef').html('物流公司名称不能大于80个字符');
+			 $('#namel').css('display','block');
+			 return false;
+		 }
+		 $('#namef').html('');
+		 $('#namel').css('display','none');
+	 }
+	 if(!validateexpressName()){
+		 return false;
+	 }
+	 var json={"expressId":expressId,"expressName":expressName};
+	 $.ajax({
+			type: "POST",
+	        url: "/burgerking/sys/saveExpressCompany",
+	        data: json,
+	        dataType: "json",
+	        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+		    cache : false,
+		    async : false,
+	        success: function(data){
+	        	if(data.res==true){
+	        		showmessage('保存成功');
+	        		$('#top_alert').fadeOut(3000);
+	        	}else{
+	        		showmessage('保存失败');
+	        		$('#top_alert').fadeOut(3000);
+	        	}
+	        }
+	    });
+ });
+ function validateexpressId(){
+	 var expressId=$.trim($('#expressId').val());
+	 if($.trim(expressId).length==0){
+		 return false;
+	 }
+	  var flag=false;
+	  $.ajax({
+			type: "POST",
+	        url: "/burgerking/sys/validateExpressId",
+	        data: {"expressId":expressId},
+	        dataType: "json",
+	        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+		    cache : false,
+		    async : false,
+	        success: function(data){
+	        	if(data.res==true){
+	        		$('#idf').html('物流公司ID已经存在');
+  	    			$('#idl').css('display', 'block');
+	        	}else{
+	        		$('#idf').html('');
+	        		$('#idl').css('display', 'none');
+	        		flag=true;
+	        	}
+	        },
+	        error:function(msg){
+	        	$('#idf').html('物流公司ID校验出现异常');
+	    		$('#idl').css('display', 'block');
+	        }
+		}); 
+	  return flag;
+}
+function validateexpressName(){
+	 var expressName=$.trim($('#expressName').val());
+	 if($.trim(expressName).length==0){
+		 return false;
+	 }
+	  var flag=false;
+	  $.ajax({
+			type: "POST",
+	        url: "/burgerking/sys/validateexpressName",
+	        data: {"expressName":expressName},
+	        dataType: "json",
+	        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+		    cache : false,
+		    async : false,
+	        success: function(data){
+	        	if(data.res==true){
+	        		$('#namef').html('物流公司名称已经存在');
+  	    			$('#namel').css('display', 'block');
+	        	}else{
+	        		$('#namef').html('');
+	        		$('#namel').css('display', 'none');
+	        		flag=true;
+	        	}
+	        },
+	        error:function(msg){
+	        	$('#namef').html('物流公司名称校验出现异常');
+	    		$('#namel').css('display', 'block');
+	        }
+		}); 
+	  return flag;
+}
+$('#back').click(function(){
+	$("#maincontent").load('../resources/html/sys/expressCompanyManager.html',function(){
+		ready();
+	});
+});
+ </script>

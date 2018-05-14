@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Tell the browser to be responsive to screen width -->
+<meta
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+	name="viewport">
+<link rel="shortcut icon" href="../resources/img/logo.png"
+	type="image/x-icon" />
+<!-- Bootstrap 3.3.5 -->
+<link rel="stylesheet"
+	href="../resources/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="../resources/dist/css/skins/_all-skins.min.css">
+<!-- DataTables -->
+<link rel="stylesheet"
+	href="../resources/plugins/datatables/dataTables.bootstrap.css">
+<!-- datetime picker -->
+<link rel="stylesheet"
+	href="../resources/treetable3/css/jquery.treetable.css">
+<script type="text/javascript"
+	src="../resources/hbFrontHtml/js/inportantExecl.js"></script>
+	<script src="../resources/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="../resources/hbFrontHtml/js/jquery.media.js"></script>  
+<script type="text/javascript">
+$(function() {  
+	var storeId=window.location.search.split("&")[0].split('=')[1];
+	var month=window.location.search.split("&")[1].split('=')[1]
+	$("#pdf").attr("href","/burgerking/file/signPdf/"+month+"/"+storeId+".pdf");
+	 document.getElementById('pdf').click();
+}); 
+</script>
+</head>
+<body>
+	<div>
+		<a class="media" href=""
+			id="pdf" style="margin: 0px auto;"></a>
+			
+	</div>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>汉堡王管理首页</title>
+<!-- Tell the browser to be responsive to screen width -->
+<meta
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+	name="viewport">
+<link rel="shortcut icon" href="../resources/img/logo.png"
+	type="image/x-icon" />
+<!-- Bootstrap 3.3.5 -->
+<link rel="stylesheet"
+	href="../resources/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="../resources/dist/css/skins/_all-skins.min.css">
+<!-- DataTables -->
+<link rel="stylesheet"
+	href="../resources/plugins/datatables/dataTables.bootstrap.css">
+<!-- datetime picker -->
+<link rel="stylesheet"
+	href="../resources/dist/css/bootstrap-datetimepicker.min.css">
+<style type="text/css">
+ul li {
+	padding: 10px;
+	float: right;
+	color: white;
+	padding-left: 20px;
+	padding-right: 20px;
+	height: 45px;
+	font-size: 16px;
+}
+
+ul {
+	list-style-type: none
+}
+
+.a {
+	background: #E1261C;
+}
+
+dl dd {
+	height: 45px;
+	line-height: 45px;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.b {
+	background: #E1261C;
+}
+</style>
+</head>
+<body>
+	<div>
+		<div
+			style="background-image: url('../resources/img/u2.png'); height: 45px;"></div>
+		<div
+			style="background-image: url('../resources/img/u4.png'); height: 45px;">
+			<div
+				style="position: absolute; left: 15%; top: 32px; width: 100px; z-index: 100">
+				<img alt="" src="../resources/img/u32.png" width="70px;">
+			</div>
+			<div class="col-sm-3"></div>
+			<div class="col-sm-6">
+				<input type="hidden" id="roles" value="${role}" />
+				<ul id="list">
+					<li id="role" style="padding: 0px;"><span
+						style="padding-left: 30px; padding-right: 30px; height: 45px; display: inline-block; line-height: 40px;">角色切换</span>
+						<dl
+							style="background-color: #ED7800; width: 80%; display: none; position: absolute; z-index: 10; padding: 0px; font-size: 14px;">
+							<form action="/burgerking/lg/toHbIndex" method="post" id="form1"><dd id="messgeMaster"  onclick="toHbIndex()" style="text-align: center">管理端管理</dd></form>
+							<dd  onclick="OpenQuitLogin()" style="text-align: center">退出登录</dd>
+						</dl>
+					</li>
+					<li id="managerPage" onclick="toPage(this.id)">个人信息</li>
+					<li id="homePage" onclick="toPage(this.id)">首页</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="content-wrapper">
+		<section class="content">
+			<div class="row" id="maincontent" style="margin: 0px;"></div>
+		</section>
+	</div>
+	<div class="modal fade" id="quitMode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		 <div class="modal-dialog modal-sm">
+		    <div class="modal-content" style="width: 400px;top:200px;">
+			       <div class="modal-header" style="background: #ED7800;text-align: center;color:#ffffff;">
+			        	<h4 class="modal-title" id="myModalLabel">退出登录</h4>
+			       </div>
+			       <div class="modal-body">
+			  	      <div class="modal-header" style="text-align: center;">
+			  	      			是否退出登录？
+			         </div>
+			         <div class="modal-footer" style="text-align: center;">
+			           <button type="button" class="btn btn btn-info btn-sm"  onclick="quitLogin()" >確定</button>
+			           <button type="button" class="btn btn btn-info btn-sm" data-dismiss="modal">取消</button>
+			         </div>
+			       </div>
+		     </div>
+		</div>
+	</div>
+	<!-- jQuery 2.1.4 -->
+	<script src="../resources/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+	<script src="../resources/bootstrap/js/bootstrap.min.js"></script>
+	<!-- Bootstrap 3.3.5 -->
+	<!-- AdminLTE App -->
+	<script src="../resources/dist/js/app.min.js"></script>
+	<script src="../resources/dist/biclouddate.js"></script>
+	<!-- DataTables -->
+	<script src="../resources/plugins/datatables/jquery.dataTables.min.js"></script>
+	<script
+		src="../resources/plugins/datatables/dataTables.bootstrap.min.js"></script>
+	<!-- upload file -->
+	<script src="../resources/dist/ajaxfileupload.js"></script>
+	<!-- datetime picker -->
+	<script
+		src="../resources/dist/datepicker/bootstrap-datetimepicker.min.js"></script>
+	<script
+		src="../resources/dist/datepicker/bootstrap-datetimepicker.zh-CN.js"></script>
+	<script type="text/javascript"
+		src="../resources/dist/My97DatePicker/WdatePicker.js"></script>
+	<script type="text/javascript">
+		 role();
+		toPage('homePage');
+		
+		function toPage(id) {
+			if (id != undefined) {
+				$("ul").find("li[class='b']").removeClass("b");
+				$("#" + id + "").addClass("b")
+
+				$("#maincontent").load(
+						'../resources/hbFrontHtml/' + id + '.html', function() {
+							ready();
+						});
+			}
+		}
+
+		function role(){
+			if($("#roles").val()=="2"){
+				$("#messgeMaster").hide(0);
+			};
+			
+		}
+		function OpenQuitLogin(){
+			$('#quitMode').modal({backdrop: 'static', keyboard: false});
+		}
+		function toHbIndex(){
+			$('#form1').submit();
+		}
+		function quitLogin(){
+			window.location.href='/burgerking/sys/hbLogin';
+		}
+		
+		$("#list").find('li').hover(function() {
+			if ($(this).attr("id") == "informationPage") {
+				$(this).find("dl").show(0);
+			}
+			if ($(this).attr("id") == "role") {
+				$(this).find("dl").show(0);
+			}
+			$(this).addClass("a")
+		}, function() {
+			$(this).find("dl").hide(0);
+			$(this).removeClass("a")
+
+		})
+
+		$("dl").find('dd').hover(function() {
+			$(this).addClass("a")
+		}, function() {
+			$(this).removeClass("a")
+
+		})
+		$("dl").width(parseInt($("dl").parent().width()));
+	</script>
+</body>
+</html>

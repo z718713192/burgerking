@@ -1,0 +1,291 @@
+<style type="text/css">
+    #top_alert {
+		width: 180px;
+		padding: 10px 0;
+		background: #4A4242;
+		border: 1px solid #4A4242;
+		color: #FFFFFF;
+		position: absolute;
+		text-align: center;
+		left: 25%;
+		top: 0;
+	}
+</style>
+
+<div class="col-md-12">
+  <div class="box">
+      <div class="box-header">
+        <h3 class="box-title">设备列表</h3>
+      </div><!-- /.box-header -->
+      <form class="form-horizontal">
+          <div class="box-body">
+		      <div class="form-group">
+		        <label for="storeId" class="col-sm-1 control-label">商店名称：</label>
+		        <div class="col-sm-3">
+		         	<select class="form-control" name="storeId" id="storeId">
+					  <option value="">----请选择商店名称----</option>
+					</select>
+		        </div>
+		        <label for="typeId" class="col-sm-1 control-label">设备类型：</label>
+		        <div class="col-sm-3">
+		          <select class="form-control" name="typeId" id="typeId">
+					  <option value="">----请选择设备类型----</option>
+				   </select>
+		        </div>
+		       <label for="deviceName" class="col-sm-1 control-label">设备名称：</label>
+		        <div class="col-sm-3">
+		          <input type="text" class="form-control" name="deviceName" id="deviceName" placeholder="请输入设备名称...">
+		        </div>
+		      </div>
+		      <br/><br/>
+		      <div class="form-group">
+		      <div class="col-sm-9"> </div>
+		       <div class="col-sm-3" align="right">
+		          <button type="button" class="btn btn-info" id="search">查询</button>
+			      <button type="button" class="btn btn-info" id="ad" onclick="add()">新增</button>
+			      <button type="reset" class="btn btn-info" id="reset">重置</button>
+		        </div>
+		      </div>
+		    </div><!-- /.box-body -->
+      </form>
+      <div class="box-body">
+        <table id="example1" class="table table-bordered table-striped table-hover">
+          <thead>
+            <tr>
+              <th style="text-align: center;">设备编号</th>
+              <th style="text-align: center;">设备名称</th>
+              <th style="text-align: center;">设备类型名称</th>
+              <th style="text-align: center;">商店名称</th>
+              <th style="text-align: center;">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+          </tbody>
+        </table>
+      </div><!-- /.box-body -->
+    </div><!-- /.box -->
+<div id="top_alert" class="top_alert" style="display: none;"><span></span></div>
+
+<!-- delete Modal -->
+<div class="modal fade" id="deleMode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">删除确认</h4>
+      </div>
+      <div class="modal-body">
+  	  <p>你真的要删除设备信息吗？删除后是不可恢复的，请慎重考虑！</p>
+      <div class="modal-footer">
+     	 <button type="button" class="btn btn btn-info btn-sm" id="delButton" value="" onclick="delDevice()">确定</button>
+        <button type="button" class="btn btn btn-info btn-sm" data-dismiss="modal">取消</button>
+      </div>
+    </div>
+  </div>
+ </div>
+</div>
+<!--  delete model end -->
+</div>
+<script type="text/javascript" src="../resources/dist/device.js"></script>
+ <script type="text/javascript">
+ var ad = '0';
+ var dele = '0';
+ var mod = '0';
+	 function ready(){
+		 findButPermiss();
+		 initDeviceSelect();
+		 initTable(null, null, null);
+	 }
+	 $('#search').click(function(){
+		 var storeId = $.trim($('#storeId').val());
+		 var typeId = $.trim($('#typeId').val());
+		 var deviceName = $.trim($('#deviceName').val());
+		 if(storeId==''){
+			 storeId=null;
+		 }
+		 if(typeId==''){
+			 typeId=null;
+		 }
+		 if(deviceName==''){
+			 deviceName=null;
+		 }
+		 initTable(storeId, typeId, deviceName);
+	 });
+	
+	function initTable(storeId, typeId, deviceName) {
+		
+		var path="/burgerking/sys/findDevices";
+		var parm=null;
+		if(storeId!=null){
+			parm="storeId="+storeId;
+		}
+		if(typeId!=null){
+			if(parm==null){
+				parm="typeId="+typeId;
+			}else{
+				parm+="&typeId="+typeId;
+			}
+		}
+		if(deviceName!=null){
+			if(parm==null){
+				parm="deviceName="+deviceName;
+			}else{
+				parm+="&deviceName="+deviceName;
+			}
+		}
+		if(parm!=null){
+			path += "?"+parm;
+		}
+		$("#example1").dataTable({
+			"bFilter": false,//去掉搜索框
+			//"bAutoWidth": true, //自适应宽度
+			"sPaginationType" : "full_numbers",
+			//"sAjaxDataProp" : "aData",
+			"bLengthChange": false, //改变每页显示数据数量
+			"bSort": false,
+			"bDestroy" : true,
+			"bProcessing" : true,
+			"sAjaxSource" : path,
+			"bServerSide" : true,
+			
+			"oLanguage" : {
+				"sProcessing" : "正在加载中......",
+				//"sLengthMenu" : "每页显示 _MENU_ 条记录",
+				"sZeroRecords" : "没有数据！",
+				"sEmptyTable" : "表中无数据存在！",
+				"sInfo" : "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+				"sInfoEmpty" : "显示0到0条记录",
+				"sInfoFiltered" : "数据表中共为 _MAX_ 条记录",
+				//"sSearch" : "搜索",
+				"oPaginate" : {
+					"sFirst" : "首页",
+					"sPrevious" : "上一页",
+					"sNext" : "下一页",
+					"sLast" : "末页"
+				}
+			},
+			 "aoColumnDefs":
+		      	 [
+		      	   {'bVisible': false, 'aTargets': []},
+		      	   {'bSortable': false, 'aTargets': [0,1,2,3,4]},
+		      	 {
+		               "aTargets": [0],
+		               "mData": null,
+		               "mRender": function (data, type, full) {
+		                   return '<div style="text-align: center;">'+data[1]+'</div>';
+		               }
+		     	  },
+		     	 {
+		               "aTargets": [1],
+		               "mData": null,
+		               "mRender": function (data, type, full) {
+		                   return '<div style="text-align: center;">'+data[2]+'</div>';
+		               }
+		     	  },{
+		               "aTargets": [2],
+		               "mData": null,
+		               "mRender": function (data, type, full) {
+		                   return '<div style="text-align: center;">'+data[3]+'</div>';
+		               }
+		     	  },{
+		               "aTargets": [3],
+		               "mData": null,
+		               "mRender": function (data, type, full) {
+		            	   if(data[4]!=null) return '<div style="text-align: center;">'+data[4]+'</div>';
+		                   return '<div style="text-align: center;"></div>';
+		               }
+		     	  },
+		      	 {
+		               "aTargets": [4],
+		               "mData": null,
+		               "mRender": function (data, type, full) {
+		            	   if(ad == '1'){
+		            		   $("#ad").show();
+		            	   }else{
+		            		   $("#ad").hide();
+		            	   }
+		            	   var dhtml = '<div style="text-align: center;">';
+		            	   if(dele == '1'){
+		            		   dhtml+='<a href="javascript:void(0);" onclick="del('+data[0]+')">删除</a>';
+		            	   }
+		            	   dhtml+='&nbsp;&nbsp;';
+		            	   if(mod == '1'){
+		            		   dhtml+='<a href="javascript:void(0);" onclick="modify('+data[0]+')">修改</a>';
+		            	   }
+		            	   dhtml+='</div>';
+		                   return dhtml;
+		               }
+		     	  }]
+		});
+	}
+	function del(id){
+		 $("#delButton").attr("value",id);
+		$('#deleMode').modal({backdrop: 'static', keyboard: false});
+	}
+	function delDevice(){
+		 $.ajax({
+				type: "POST",
+		        url: "/burgerking/sys/delDevice",
+		        data: {"id":$('#delButton').attr('value')},
+		        dataType: "json",
+		        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+			    cache : false,
+			    async : false,
+		        success: function(data){
+		        	if(data.res=true){
+		        		$('#deleMode').modal('hide');
+		        		initTable(null);
+		        		showmessage('删除成功');
+		        		$('#top_alert').fadeOut(3000);
+		        		
+		        	}else{
+		        		showmessage('删除失败');
+		        		$('#top_alert').fadeOut(3000);
+		        	}
+		        }
+		 });
+	}
+	
+	function modify(id){
+		
+		$("#maincontent").load('../resources/html/sys/deviceModify.html',function(){
+			ready(id);
+		});
+	}
+ function showmessage(text) {
+		
+		$('#top_alert').empty().append(
+				'<span>' + text + '</span>');
+		$('#top_alert').css('display', 'block');
+		
+		$('.top_alert').css({ 
+			position:'absolute', 
+			left: ($(window).width() - $('.top_alert').outerWidth())/3, 
+			top: ($(window).height() - $('.top_alert').outerHeight())/8 + $(".content").scrollTop() 
+			}); 
+		}
+function add(){
+	$("#maincontent").load('../resources/html/sys/deviceAdd.html',function(){
+		ready();
+	});
+}
+function findButPermiss(){
+	$.ajax({
+			type: "GET",
+	        url: "/burgerking/sys/findDeviceButPermission",
+	        data: {},
+	        dataType: "json",
+	        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+		    cache : false,
+		    async : true,
+	        success: function(data){
+	        	$(data.but_per).each(function(i, item){
+	        		if(item.functionId=='1010001') ad = '1';
+	        		if(item.functionId=='1010002') dele = '1';
+	        		if(item.functionId=='1010003') mod = '1';
+	        	});
+	        }
+	        });
+}
+ </script>

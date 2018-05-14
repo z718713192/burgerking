@@ -1,0 +1,287 @@
+<style type="text/css">
+    #top_alert {
+		width: 180px;
+		padding: 10px 0;
+		background: #4A4242;
+		border: 1px solid #4A4242;
+		color: #FFFFFF;
+		position: absolute;
+		text-align: center;
+		left: 25%;
+		top: 0;
+	}
+</style>
+<div class="col-xs-12 col-md-12">
+<!-- Horizontal Form -->
+<div class="box" style="height: 100%;">
+  <div class="box-header with-border">
+    <h3 class="box-title">新增用户</h3>
+  </div><!-- /.box-header -->
+  <!-- form start -->
+  <form class="form-horizontal">
+    <div class="box-body">
+      <div class="form-group">
+        <label for="username" class="col-sm-3 control-label">用户名：</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="username" id="username" placeholder="请输入用户名..." onblur="validateName()">
+        </div>
+        <label id="userl">
+        	<font style="color: red;" id="userf"></font>
+        </label>
+      </div>
+      <div class="form-group">
+        <label for="password" class="col-sm-3 control-label">密码：</label>
+        <div class="col-sm-6">
+          <input type="password" class="form-control" name="password" id="password" placeholder="请输入密码...">
+        </div>
+        <label id="passl">
+        	<font style="color: red;" id="passf"></font>
+        </label>
+      </div>
+      <div id="agencyId-div">
+	     
+      </div>
+     
+    </div><!-- /.box-body -->
+    <div class="box-footer" align="center">
+      <button type="button" class="btn btn-info" id="save">保存</button>
+      <button type="reset" class="btn btn-info" id="reset">重置</button>
+      <button type="button" class="btn btn-info" id="back">返回</button>
+    </div><!-- /.box-footer -->
+  </form>
+  <div id="top_alert" class="top_alert" style="display: none;"><span></span></div>
+</div><!-- /.box -->
+</div>
+ <script type="text/javascript">
+ function ready(){
+	 findAgency();
+ }
+ 
+ function showmessage(text) {
+		
+		$('#top_alert').empty().append(
+				'<span>' + text + '</span>');
+		$('#top_alert').css('display', 'block');
+		
+		$('.top_alert').css({ 
+			position:'absolute', 
+			left: ($(window).width() - $('.top_alert').outerWidth())/3, 
+			top: ($(window).height() - $('.top_alert').outerHeight())/8 + $(".content").scrollTop() 
+			}); 
+		}
+ $('#save').click(function(){
+	 var username=$.trim($('#username').val());
+	 var password=$.trim($('#password').val());
+	 var agencyId = getAgencyId();
+	 var id=$.trim($('#id').val());
+	 if(username==''){
+		 $('#userf').html('请输入用户名');
+		 $('#userl').css('display','block');
+		 return false;
+	 }else{
+		 if(username.length>20){
+			 $('#userf').html('用户名长度不能大于20位');
+			 $('#userl').css('display','block');
+			 return false;
+		 }
+		 $('#userf').html('');
+		 $('#userl').css('display','none');
+	 }
+	 if(id==''){
+		 if(!validateName()){
+			 return false;
+		 } 
+	 }
+	 
+	 if(password==''){
+		 $('#passf').html('请输入密码');
+		 $('#passl').css('display','block');
+		 return false;
+	 }else{
+		 if(password.length<6){
+			 $('#passf').html('密码不能小于6位');
+			 $('#passl').css('display','block');
+			 return false;
+		 }
+		 $('#passf').html('');
+		 $('#passl').css('display','none');
+	 }
+	
+	 var json={"username":username,"password":password,"agencyId":agencyId};
+ 	if(id!=''){
+ 		json={"username":username,"password":password,"agencyId":agencyId,"id":id};
+	 }
+	 $.ajax({
+			type: "POST",
+	        url: "/burgerking/sys/saveUser",
+	        data: json,
+	        dataType: "json",
+	        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+		    cache : false,
+		    async : false,
+	        success: function(data){
+	        	if(data.res==true){
+	        		showmessage('保存成功');
+	        		$('#top_alert').fadeOut(3000);
+	        	}else{
+	        		showmessage('保存失败');
+	        		$('#top_alert').fadeOut(3000);
+	        	}
+	        }
+	    });
+ });
+ function validateName(){
+	  var username=$.trim($('#username').val());
+	  var flag=false;
+	  $.ajax({
+			type: "POST",
+	        url: "/burgerking/sys/validate",
+	        data: {"username":username},
+	        dataType: "json",
+	        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+		    cache : false,
+		    async : false,
+	        success: function(data){
+	        	if(data.res!='error'){
+	        		$('#userf').html('用户名已存在');
+   	    			$('#userl').css('display', 'block');
+	        	}else{
+	        		$('#userf').html('');
+	        		$('#userl').css('display', 'none');
+	        		flag=true;
+	        	}
+	        },
+	        error:function(msg){
+	        	$('#userf').html('用户名校验出现异常');
+	    		$('#userl').css('display', 'block');
+	        }
+		}); 
+	  return flag;
+ }
+ function findAgency(){
+	 $.ajax({
+			type: "GET",
+	        url: "/burgerking/sys/findAgency",
+	        data: {},
+	        dataType: "json",
+	        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+		    cache : false,
+		    async : false,
+	        success: function(data){
+// 	        	var dhtml = '<option value="">----请选择总行----</option>';
+// 	        	$(data.agencys).each(function(i, item){
+// 	        		dhtml+='<option value="'+item.agencyId+'">'+item.agencyName+'</option>';
+// 	        	});
+// 	        	$('#agencyId1').html(dhtml);
+				var dhtml = '';
+				if(data.code=='201'){
+					dhtml += '<div class="form-group">';
+					dhtml += '<label for="agencyId" class="col-sm-3 control-label">用户所属机构：</label>';
+					dhtml += '<div class="col-sm-6">';
+					dhtml += '<select class="form-control" name="agencyId2" id="agencyId2" onchange="selectFinalAgency()">';
+					dhtml += '<option value="">----请选择分行----</option>';
+					$(data.agencys.secondAgency).each(function(i, item){
+	 	        		dhtml+='<option value="'+item.agencyId+'">'+item.agencyName+'</option>';
+	 	        	});
+					dhtml += '</select>';
+					dhtml += '</div>';
+					dhtml += '<label id="agencyIdl">';
+					dhtml += '<font style="color: red;" id="agencyIdf"></font>';
+					dhtml += '</label>';
+					dhtml += '</div>';
+					dhtml += '<div class="form-group">';
+					dhtml += '<label for="agencyId" class="col-sm-3 control-label"></label>';
+					dhtml += '<div class="col-sm-6">';
+					dhtml += '<select class="form-control" name="agencyId3" id="agencyId3" disabled="disabled">';
+					dhtml += '<option value="">----请选择支行----</option>';
+					dhtml += '</select>';
+					dhtml += '</div>';
+					dhtml += '</div>';
+				}else if(data.code=='202'){
+					dhtml += '<div class="form-group">';
+					dhtml += '<label for="agencyId" class="col-sm-3 control-label">用户所属机构：</label>';
+					dhtml += '<div class="col-sm-6">';
+					dhtml += '<select class="form-control" name="agencyId3" id="agencyId3">';
+					dhtml += '<option value="">----请选择支行----</option>';
+					$(data.agencys).each(function(i, item){
+	 	        		dhtml+='<option value="'+item.agencyId+'">'+item.agencyName+'</option>';
+	 	        	});
+					dhtml += '</select>';
+					dhtml += '</div>';
+					dhtml += '<label id="agencyIdl">';
+					dhtml += '<font style="color: red;" id="agencyIdf"></font>';
+					dhtml += '</label>';
+					dhtml += '</div>';
+				}else if(data.code='203'){
+					dhtml += '<div class="form-group">';
+					dhtml += '<label for="agencyId" class="col-sm-3 control-label">用户所属机构：</label>';
+					dhtml += '<div class="col-sm-6">';
+					dhtml += '<input type="hidden" name="agencyId" id="agencyId" value="'+data.agencys.agencyId+'">'
+					dhtml += '<label class="control-label" name="agencyName3" id="agencyName3">'+data.agencys.agencyName;
+					dhtml += '</label>';
+					dhtml += '</div>';
+					dhtml += '</div>';
+				}else{
+					dhtml += '<div class="form-group">';
+					dhtml += '<label for="agencyId" class="col-sm-3 control-label">用户所属机构：</label>';
+					dhtml += '<div class="col-sm-6">';
+					dhtml += '<input type="hidden" id="agencyId2" name="agencyId2" value="'+data.agencys.agencyId+'">'
+					dhtml += '<label class="control-label" name="agencyName2" id="agencyName2">'+data.agencys.agencyName;
+					dhtml += '</label>';
+					dhtml += '</div>';
+					dhtml += '</div>';
+				}
+				$('#agencyId-div').html(dhtml);
+	        }
+		});
+ }
+ function selectFinalAgency(){
+	 var agencyId=$.trim($('#agencyId2').val());
+	 $.ajax({
+			type: "GET",
+	        url: "/burgerking/sys/findFinalAgency",
+	        data: {"agencyId":agencyId},
+	        dataType: "json",
+	        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+		    cache : false,
+		    async : false,
+	        success: function(data){
+	        	if(data.agencys!=null){
+	        		var dhtml = '<option value="">----请选择支行----</option>';
+		        	$(data.agencys).each(function(i, item){
+		        		dhtml+='<option value="'+item.agencyId+'">'+item.agencyName+'</option>';
+		        	});
+		        	$('#agencyId3').show();
+		        	$('#agencyId3').html(dhtml);
+		        	$('#agencyId3').attr("disabled",false);
+	        	}else{
+	        		$('#agencyId3').val('');
+	        		$('#agencyId3').hide();
+	        	}
+	        }
+		});
+ }
+ function getAgencyId(){
+	 var agencyId=$.trim($('#agencyId').val());
+	 var agencyId2=$.trim($('#agencyId2').val());
+	 var agencyId3=$.trim($('#agencyId3').val());
+	 var str= "";
+	 if(agencyId2!=''){
+		 if(agencyId3!='') {
+			 str = agencyId3;
+		 }else{
+			 str = agencyId2;
+		 }
+	 }else if(agencyId3!=''){
+		 str = agencyId3;
+	 }else if(agencyId!='') {
+		 str = agencyId;
+	 }
+	 return str;
+ }
+$('#back').click(function(){
+	$("#maincontent").load('../resources/html/sys/userManager.html',function(){
+		ready();
+	});
+});
+ </script>

@@ -1,0 +1,351 @@
+<style type="text/css">
+    #top_alert {
+		width: 180px;
+		padding: 10px 0;
+		background: #4A4242;
+		border: 1px solid #4A4242;
+		color: #FFFFFF;
+		position: absolute;
+		text-align: center;
+		left: 25%;
+		top: 0;
+	}
+</style>
+<div class="col-xs-12 col-md-12">
+<!-- Horizontal Form -->
+<div class="box" style="height: 100%;">
+  <div class="box-header with-border">
+    <h3 class="box-title">添加商店</h3>
+  </div><!-- /.box-header -->
+  <!-- form start -->
+  <form class="form-horizontal">
+    <div class="box-body">
+    <div class="form-group">
+        <label for="storeId" class="col-sm-3 control-label">商店编号：<font color="red">*</font></label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="storeId" id="storeId" placeholder="请输入商店编号..." onblur="validateId()">
+        </div>
+        <label id="stIdl">
+        	<font style="color: red;" id="stIdf"></font>
+        </label>
+      </div>
+      <div class="form-group">
+        <label for="storeName" class="col-sm-3 control-label">商店名称：<font color="red">*</font></label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="storeName" id="storeName" placeholder="请输入商店名称..." onblur="validateName()">
+        </div>
+        <label id="storel">
+        	<font style="color: red;" id="storef"></font>
+        </label>
+      </div>
+      <div class="form-group">
+        <label for="storeType" class="col-sm-3 control-label">商店类型：<font color="red">*</font></label>
+        <div class="col-sm-6">
+          <select class="form-control" name="storeType" id="storeType">
+           <option value="">----请选择商店类型----</option>
+          </select>
+        </div>
+        <label id="typel">
+        	<font style="color: red;" id="typef"></font>
+        </label>
+      </div>
+      <div class="form-group">
+        <label for="manager" class="col-sm-3 control-label">联系人：</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="manager" id="manager" placeholder="请输入联系人...">
+        </div>
+        <label id="manal">
+        	<font style="color: red;" id="manaf"></font>
+        </label>
+      </div>
+      <div class="form-group">
+        <label for="tel" class="col-sm-3 control-label">电话：</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="tel" id="tel" placeholder="请输入电话...">
+        </div>
+        <label id="tell">
+        	<font style="color: red;" id="telf"></font>
+        </label>
+      </div>
+      <div class="form-group">
+        <label for="ip" class="col-sm-3 control-label">IP地址：</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="ip" id="ip" placeholder="请输入ip地址...">
+        </div>
+        <label id="ipl">
+        	<font style="color: red;" id="ipf"></font>
+        </label>
+      </div>
+      <div class="form-group">
+        <label for="port" class="col-sm-3 control-label">端口号：</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="port" id="port" placeholder="请输入端口号...">
+        </div>
+        <label id="portl">
+        	<font style="color: red;" id="portf"></font>
+        </label>
+      </div>
+        <div class="form-group">
+        <label for="address" class="col-sm-3 control-label">地址：</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="address" id="address" placeholder="请输入地址...">
+        </div>
+        <label id="addrl">
+        	<font style="color: red;" id="addrf"></font>
+        </label>
+      </div>
+        <div class="form-group">
+        <label for="remark" class="col-sm-3 control-label">备注：</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="remark" id="remark" placeholder="请输入备注...">
+        </div>
+        <label id="remal">
+        	<font style="color: red;" id="remaf"></font>
+        </label>
+      </div>
+     
+    </div><!-- /.box-body -->
+    <div class="box-footer" align="center">
+      <button type="button" class="btn btn-info" id="save">保存</button>
+      <button type="reset" class="btn btn-info" id="reset">重置</button>
+      <button type="button" class="btn btn-info" id="back">返回</button>
+    </div><!-- /.box-footer -->
+  </form>
+  <div id="top_alert" class="top_alert" style="display: none;"><span></span></div>
+</div><!-- /.box -->
+</div>
+ <script type="text/javascript">
+ function ready(){
+	 findType();
+ }
+ 
+ function showmessage(text) {
+		
+		$('#top_alert').empty().append(
+				'<span>' + text + '</span>');
+		$('#top_alert').css('display', 'block');
+		
+		$('.top_alert').css({ 
+			position:'absolute', 
+			left: ($(window).width() - $('.top_alert').outerWidth())/3, 
+			top: ($(window).height() - $('.top_alert').outerHeight())/8 + $(".content").scrollTop() 
+			}); 
+		}
+ $('#save').click(function(){
+	 var storeId=$.trim($('#storeId').val());
+	 var storeName=$.trim($('#storeName').val());
+	 var storeType=$.trim($('#storeType').val());
+	 var manager=$.trim($('#manager').val());
+	 var tel=$.trim($('#tel').val());
+	 var address=$.trim($('#address').val());
+	 var remark=$.trim($('#remark').val());
+	 var id=$.trim($('#id').val());
+	 if(storeId==''){
+		 $('#stIdf').html('请输入商店编号');
+		 $('#stIdl').css('display','block');
+		 return false;
+	 }else{
+		 if(storeId.length>20){
+			 $('#stIdf').html('商店编号不能大于20个字符');
+			 $('#stIdl').css('display','block');
+			 return false;
+		 }
+		 $('#stIdf').html('');
+		 $('#stIdl').css('display','none');
+	 }
+	 if(storeName==''){
+		 $('#storef').html('请输入商店名');
+		 $('#storel').css('display','block');
+		 return false;
+	 }else{
+		 if(storeName.length>100){
+			 $('#storef').html('商店名不能大于100个字符');
+			 $('#storel').css('display','block');
+			 return false;
+		 }
+		 $('#storef').html('');
+		 $('#storel').css('display','none');
+	 }
+	 if(id==''){
+		 if(!validateName()){
+			 return false;
+		 } 
+	 }
+	 
+ 	 if(storeType==''){
+		 $('#typef').html('请选择商店类型');
+		 $('#typel').css('display','block');
+		 return false;
+	 }else{
+		 $('#typef').html('');
+		 $('#typel').css('display','none');
+	 } 
+	 
+	if(manager.length>16){
+		$('#manaf').html('联系人长度不能超过16位');
+		$('#manal').css('display','block');
+		return false;
+		 	}else{
+		 		$('#manaf').html('');
+		 		$('#manal').css('display','none');
+	 }
+	 
+		 if(tel.length>20){
+			 $('#telf').html('电话长度不能超过20位');
+			 $('#tell').css('display','block');
+			 return false;
+		 }else{
+		 $('#telf').html('');
+		 $('#tell').css('display','none');
+	 }
+	 var ip=$.trim($('#ip').val());
+	 if(ip!=''){
+		if(!checkIP(ip)){
+			$('#ipf').html('IP地址不正确');
+			$('#ipl').css('display','block');
+			return false;
+		}
+		$('#ipf').html('');
+		$('#ipl').css('display','none');
+	 }
+	 var port=$.trim($('#port').val());
+	 if(port!=''){
+		if(port.lenght>4){
+			$('#portf').html('端口号不能大于四个字符');
+			$('#portl').css('display','block');
+			return false;
+		}
+		$('#portf').html('');
+		$('#portl').css('display','none');
+	 }
+	 
+	 if(address.length>60){
+		 $('#addrf').html('地址长度不能超过60位');
+		 $('#addrl').css('display','block');
+		 return false;
+	 }else{
+		 $('#addrf').html('');
+		 $('#addrl').css('display','none');
+	 }
+	 
+		 if(remark.length>200){
+			 $('#remaf').html('备注长度不能超过200位');
+			 $('#remal').css('display','block');
+			 return false;
+		 }else{
+		 $('#remaf').html('');
+		 $('#remal').css('display','none');
+	 }
+	
+	 var json={"port":port,"ip":ip,"storeId":storeId,"storeName":storeName,"storeType":storeType,"manager":manager,"tel":tel,"address":address,"remark":remark};
+ 	if(id!=''){
+ 		json={"port":port,"ip":ip,"storeId":storeId,"storeName":storeName,"storeType":storeType,"manager":manager,"tel":tel,"address":address,"remark":remark,'id':id};
+	 }
+	 $.ajax({
+			type: "POST",
+	        url: "/burgerking/sys/saveStore",
+	        data: json,
+	        dataType: "json",
+	        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+		    cache : false,
+		    async : false,
+	        success: function(data){
+	        	if(data.res==true){
+	        		showmessage('保存成功');
+	        		$('#top_alert').fadeOut(3000);
+	        	}else{
+	        		showmessage('保存失败');
+	        		$('#top_alert').fadeOut(3000);
+	        	}
+	        }
+	    });
+ });
+ function validateName(){
+	  var storeName=$.trim($('#storeName').val());
+	  var flag=false;
+	  $.ajax({
+			type: "POST",
+	        url: "/burgerking/sys/validateName",
+	        data: {"storeName":storeName},
+	        dataType: "json",
+	        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+		    cache : false,
+		    async : false,
+	        success: function(data){
+	        	if(data.res!='error'){
+	        		$('#storef').html('商店名已存在');
+   	    			$('#storel').css('display', 'block');
+	        	}else{
+	        		$('#storef').html('');
+	        		$('#storel').css('display', 'none');
+	        		flag=true;
+	        	}
+	        },
+	        error:function(msg){
+	        	$('#storef').html('商店名校验出现异常');
+	    		$('#storel').css('display', 'block');
+	        }
+		}); 
+	  return flag;
+ }
+ function validateId(){
+	  var storeId=$.trim($('#storeId').val());
+	  var flag=false;
+	  $.ajax({
+			type: "POST",
+	        url: "/burgerking/sys/validateid",
+	        data: {"storeId":storeId},
+	        dataType: "json",
+	        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+		    cache : false,
+		    async : false,
+	        success: function(data){
+	        	if(data.res!='error'){
+	        		$('#stIdf').html('商店编号已存在');
+  	    			$('#stIdl').css('display', 'block');
+	        	}else{
+	        		$('#stIdf').html('');
+	        		$('#stIdl').css('display', 'none');
+	        		flag=true;
+	        	}
+	        },
+	        error:function(msg){
+	        	$('#stIdf').html('商店编号校验出现异常');
+	    		$('#stIdl').css('display', 'block');
+	        }
+		}); 
+	  return flag;
+}
+ function findType(){
+	 $.ajax({
+			type: "GET",
+	        url: "/burgerking/sys/findAllStoreType",
+	        data: {},
+	        dataType: "json",
+	        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+		    cache : false,
+		    async : false,
+	        success: function(data){
+	        	var dhtml='<option value="">----请选择商店类型----</option>';
+	        	$(data.type).each(function(i,item){
+	        		dhtml+='<option value="'+item.typeId+'">'+item.typeName+'</option>';
+	        	});
+	        	$('#storeType').html(dhtml);
+	        }
+	        });
+ }
+$('#back').click(function(){
+	$("#maincontent").load('../resources/html/sys/storeManager.html',function(){
+		ready();
+	});
+});
+function checkIP(ip){  
+   var re=/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/;//正则表达式     
+   if(re.test(ip))     
+   {     
+       if( RegExp.$1<256 && RegExp.$2<256 && RegExp.$3<256 && RegExp.$4<256)   
+       return true;     
+   }     
+   return false;      
+}  
+ </script>
